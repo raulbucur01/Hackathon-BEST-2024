@@ -140,45 +140,40 @@ const SignupForm = () => {
   });
 
   async function onSubmit(values: z.infer<typeof SignupValidation>) {
-    console.log("values", values);
-    console.log("selectedAllergies", selectedAllergies);
-    console.log("selectedConditions", selectedConditions);
-    console.log("selectedMedications", selectedMedications);
+    const newUser = await createUserAccount({
+      ...values,
+      allergies: selectedAllergies.map((item) => item.value),
+      conditions: selectedConditions.map((item) => item.value),
+      medications: selectedMedications.map((item) => item.value),
+    });
 
-    // const newUser = await createUserAccount({
-    //   ...values,
-    //   allergies: selectedAllergies.map((item) => item.value),
-    //   conditions: selectedConditions.map((item) => item.value),
-    //   medications: selectedMedications.map((item) => item.value),
-    // });
+    if (!newUser) {
+      return toast({
+        title: "Sign Up failed, Please try again.",
+      });
+    }
 
-    // if (!newUser) {
-    //   return toast({
-    //     title: "Sign Up failed, Please try again.",
-    //   });
-    // }
+    const session = await signInAccount({
+      email: values.email,
+      password: values.password,
+    });
 
-    // const session = await signInAccount({
-    //   email: values.email,
-    //   password: values.password,
-    // });
+    if (!session) {
+      return toast({
+        title: "Sign Up failed, Please try again.",
+      });
+    }
 
-    // if (!session) {
-    //   return toast({
-    //     title: "Sign Up failed, Please try again.",
-    //   });
-    // }
+    const isLoggedIn = await checkAuthUser();
 
-    // const isLoggedIn = await checkAuthUser();
-
-    // if (isLoggedIn) {
-    //   form.reset();
-    //   navigate("/");
-    // } else {
-    //   return toast({
-    //     title: "Sign Up failed, Please try again.",
-    //   });
-    // }
+    if (isLoggedIn) {
+      form.reset();
+      navigate("/");
+    } else {
+      return toast({
+        title: "Sign Up failed, Please try again.",
+      });
+    }
   }
 
   return (
