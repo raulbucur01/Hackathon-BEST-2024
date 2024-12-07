@@ -1,10 +1,8 @@
-import { ID, ImageGravity, Query } from "appwrite";
+import { ID, Query } from "appwrite";
 
-import { INewPost, INewPatient, IUpdatePost, INewDoctor } from "@/types";
+import { INewPatient, INewDoctor } from "@/types";
 import { appwriteConfig, account, avatars, databases, storage } from "./config";
 import axios from "axios";
-
-
 
 export async function createPatientAccount(patient: INewPatient) {
   try {
@@ -174,7 +172,6 @@ export async function createAppointment({
   }
 }
 
-
 export async function getAppointmentsForUser(patientId: string) {
   try {
     console.log("Fetching appointments for user ID:", patientId);
@@ -190,7 +187,10 @@ export async function getAppointmentsForUser(patientId: string) {
     const appointmentDetails = await Promise.all(
       appointments.documents.map(async (appointment: any) => {
         if (typeof appointment.doctor !== "string") {
-          console.error("Invalid doctor ID in appointment:", appointment.doctor);
+          console.error(
+            "Invalid doctor ID in appointment:",
+            appointment.doctor
+          );
           return appointment; // Skip invalid entries
         }
 
@@ -203,7 +203,10 @@ export async function getAppointmentsForUser(patientId: string) {
       })
     );
 
-    console.log("Appointments enriched with doctor details:", appointmentDetails);
+    console.log(
+      "Appointments enriched with doctor details:",
+      appointmentDetails
+    );
     return appointmentDetails;
   } catch (error) {
     console.error("Error fetching appointments:", error);
@@ -211,20 +214,19 @@ export async function getAppointmentsForUser(patientId: string) {
   }
 }
 
-
-
-
-
 export async function getDiagnosis(message: string) {
   try {
-    const response = await axios.post("https://ai-backend-611700556817.us-central1.run.app/analyze", {
-      user_input: message,
-    });
+    const response = await axios.post(
+      "https://ai-backend-611700556817.us-central1.run.app/analyze",
+      {
+        user_input: message,
+      }
+    );
 
     return response.data;
   } catch (err) {
-    console.log(err)
-  } 
+    console.log(err);
+  }
 }
 export async function getDoctorsBySpecialization(specializations: string[]) {
   try {
