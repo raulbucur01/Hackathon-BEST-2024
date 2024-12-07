@@ -288,13 +288,54 @@ const PatientSignUpForm = () => {
                 menuPortalTarget={document.body}
               />
             </div>
+
+            {/* Add GDPR and User Agreement Checkbox */}
+            <FormField
+              control={form.control}
+              name="gdprAgreement"
+              render={({ field }) => (
+                <FormItem className="flex items-start gap-2 mt-4">
+                  <FormControl>
+                    <input
+                      type="checkbox"
+                      checked={field.value}
+                      onChange={(e) => field.onChange(e.target.checked)}
+                      className="h-4 w-4 border-gray-300 rounded"
+                    />
+                  </FormControl>
+                  <FormLabel className="text-sm text-gray-300">
+                    I agree to the{" "}
+                    <Link
+                      to="/terms"
+                      target="_blank"
+                      className="text-primary-500 hover:underline"
+                    >
+                      User Agreement
+                    </Link>{" "}
+                    and{" "}
+                    <Link
+                      to="/gdpr"
+                      target="_blank"
+                      className="text-primary-500 hover:underline"
+                    >
+                      GDPR Privacy Policy
+                    </Link>
+                  </FormLabel>
+                </FormItem>
+              )}
+            />
           </form>
         </div>
 
         <div className="w-full px-4 mt-4">
           <Button
             type="submit"
-            className="shad-button_primary w-full"
+            className={`shad-button_primary py-2 px-4 text-base ${
+              !form.watch("gdprAgreement")
+                ? "opacity-50 cursor-not-allowed"
+                : ""
+            } w-[200px] ml-[calc(50%-100px)]`}
+            disabled={!form.watch("gdprAgreement")}
             onClick={() => {
               form.handleSubmit(onSubmit)(); // Manually trigger the onSubmit function
             }}
@@ -308,6 +349,7 @@ const PatientSignUpForm = () => {
               "Sign up"
             )}
           </Button>
+
           <p className="text-small-regular text-light-2 text-center mt-2">
             Already have an account?
             <Link

@@ -14,6 +14,11 @@ export const PatientSignupValidation = z.object({
   password: z
     .string()
     .min(8, { message: "Password must be at least 8 characters" }),
+  gdprAgreement: z.literal(true, {
+    errorMap: () => ({
+      message: "You must accept the GDPR and User Agreement",
+    }),
+  }),
 });
 
 export const SigninValidation = z.object({

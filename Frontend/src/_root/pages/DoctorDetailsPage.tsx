@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useGetDoctorDetails } from "@/lib/react-query/queriesAndMutations";
 import { Modal } from "../../components/ui/Modal";
@@ -12,7 +12,8 @@ const DoctorDetailsPage = () => {
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
   if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error loading doctor details. Please try again later.</div>;
+  if (error)
+    return <div>Error loading doctor details. Please try again later.</div>;
   if (!doctor) return <div>Doctor not found.</div>;
 
   const handleMakeAppointment = async () => {

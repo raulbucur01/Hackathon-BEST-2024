@@ -14,7 +14,7 @@ import {
   getDiagnosis,
   getDoctorsBySpecialization
 } from "../api";
-import { INewPost, INewPatient, IUpdatePost, INewDoctor } from "@/types";
+import { INewPatient, INewDoctor } from "@/types";
 import { QUERY_KEYS } from "./queryKeys";
 
 export const useCreatePatientAccount = () => {
