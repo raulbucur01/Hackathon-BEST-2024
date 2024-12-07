@@ -1,20 +1,22 @@
+import { SidebarProvider } from "@/components/ui/sidebar";
+import LeftSidebar from "@/components/shared/LeftSidebar";
 import { Outlet } from "react-router-dom";
-
-// import Topbar from "@/components/shared/Topbar";
-// import Bottombar from "@/components/shared/Bottombar";
-// import LeftSidebar from "@/components/shared/LeftSidebar";
+import UserInfo from "@/components/shared/NavUser"; // Corrected import path
 
 const RootLayout = () => {
   return (
     <div className="w-full md:flex">
-      {/* <Topbar />
-      <LeftSidebar /> */}
+      {/* Sidebar */}
+      <SidebarProvider>
+        <LeftSidebar />
+      </SidebarProvider>
 
+      {/* Main Content Section */}
       <section className="flex flex-1 h-full">
-        <Outlet />
+        <main className="w-full">
+          <Outlet />
+        </main>
       </section>
-
-      {/* <Bottombar /> */}
     </div>
   );
 };

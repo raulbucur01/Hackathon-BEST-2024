@@ -5,3 +5,7 @@ export { default as Home } from "./Home";
 // export { default as PostDetails } from "./PostDetails";
 // export { default as LikedPosts } from "./LikedPosts";
 // export { default as AllUsers } from "./AllUsers";
+export { default as Search } from "./Search";
+export { default as Inbox } from "./Inbox";
+export { default as Settings } from "./Settings";
+export { default as Profile } from "./Profile";

@@ -9,7 +9,7 @@ const AuthLayout = () => {
       ) : (
         <div className="relative h-screen w-screen">
           <img
-            src="public/26807.jpg"
+            src="/assets/26807.jpg"
             alt="Background"
             className="absolute inset-0 h-full w-full object-cover bg-no-repeat"
           />
