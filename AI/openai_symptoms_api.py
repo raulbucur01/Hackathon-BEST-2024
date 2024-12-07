@@ -3,8 +3,16 @@ from pydantic import BaseModel
 from openai import OpenAI
 from utils import load_config_yaml_file
 from pathlib import Path
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Change "*" to specific domains for security
+    allow_methods=["GET", "POST", "OPTIONS"],  # Allow OPTIONS for preflight
+    allow_headers=["*"],
+)
 
 
 config = load_config_yaml_file(Path('config.yaml'))
@@ -63,6 +71,32 @@ def get_diagnosis(symptoms):
         return diagnosis
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error fetching diagnosis: {str(e)}")
+
+    
+def get_medical_field(diagnosis):
+    """
+    Provides the suggested medical field(s) based on the diagnosis using OpenAI GPT.
+    """
+    messages = [
+        {"role": "system", "content": "You are an assistant specializing in mapping medical diagnoses to relevant medical fields (e.g., Radiology, Dermatology, Psychiatry). Keep responses brief and clear."},
+        {"role": "user",
+         "content": f"Based on the diagnosis: \"{diagnosis}\", which medical field(s) should the patient consult?"}
+    ]
+    try:
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=messages,
+            max_tokens=100,
+            temperature=0.7
+        )
+        fields = response.choices[0].message.content.strip()
+
+        # Return a clean list of fields
+        suggested_fields = [field.strip() for field in fields.split(",") if field.strip()]
+        return suggested_fields
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error fetching medical fields: {str(e)}")
+
     
 @app.post("/analyze")
 def analyze_health(request: PatientRequest):
@@ -80,9 +114,13 @@ def analyze_health(request: PatientRequest):
     # Step 2: Get Diagnosis
     diagnosis = get_diagnosis(symptoms)
 
+    # Step 3: Get Suggested Medical Fields
+    medical_fields = get_medical_field(diagnosis)
+
     # Return the results
     return {
         "symptoms": symptoms,
-        "diagnosis": diagnosis
+        "diagnosis": diagnosis,
+        "suggested_fields": medical_fields
     }
 
