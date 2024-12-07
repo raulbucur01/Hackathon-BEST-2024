@@ -2,6 +2,9 @@ import { ID, ImageGravity, Query } from "appwrite";
 
 import { INewPost, INewPatient, IUpdatePost, INewDoctor } from "@/types";
 import { appwriteConfig, account, avatars, databases, storage } from "./config";
+import axios from "axios";
+
+
 
 export async function createPatientAccount(patient: INewPatient) {
   try {
@@ -120,6 +123,126 @@ export async function signInAccount(user: { email: string; password: string }) {
   } catch (error) {
     console.log(error);
     return null;
+  }
+}
+
+export async function createAppointment({
+  patientId,
+  doctorId,
+  date,
+}: {
+  patientId: string;
+  doctorId: string;
+  date: string;
+}) {
+  try {
+    console.log("Creating appointment with:", { patientId, doctorId, date });
+
+    await databases.createDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.appointmentsCollectionId,
+      ID.unique(), // Ensures valid document ID
+      {
+        patient: patientId,
+        doctor: doctorId,
+        date,
+      }
+    );
+
+    const doctor = await databases.getDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.doctorCollectionId,
+      doctorId
+    );
+
+    const updatedDates = (doctor.availableDates || []).filter(
+      (availableDate: string) => availableDate !== date
+    );
+
+    await databases.updateDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.doctorCollectionId,
+      doctorId,
+      { availableDates: updatedDates }
+    );
+
+    console.log("Appointment created successfully.");
+    return true;
+  } catch (error) {
+    console.error("Error creating appointment:", error);
+    throw error;
+  }
+}
+
+
+export async function getAppointmentsForUser(patientId: string) {
+  try {
+    console.log("Fetching appointments for user ID:", patientId);
+
+    const appointments = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.appointmentsCollectionId,
+      [Query.equal("patient", patientId)]
+    );
+
+    console.log("Fetched appointments from database:", appointments.documents);
+
+    const appointmentDetails = await Promise.all(
+      appointments.documents.map(async (appointment: any) => {
+        if (typeof appointment.doctor !== "string") {
+          console.error("Invalid doctor ID in appointment:", appointment.doctor);
+          return appointment; // Skip invalid entries
+        }
+
+        const doctor = await databases.getDocument(
+          appwriteConfig.databaseId,
+          appwriteConfig.doctorCollectionId,
+          appointment.doctor
+        );
+        return { ...appointment, doctor };
+      })
+    );
+
+    console.log("Appointments enriched with doctor details:", appointmentDetails);
+    return appointmentDetails;
+  } catch (error) {
+    console.error("Error fetching appointments:", error);
+    throw error;
+  }
+}
+
+
+
+
+
+export async function getDiagnosis(message: string) {
+  try {
+    const response = await axios.post("https://ai-backend-611700556817.us-central1.run.app/analyze", {
+      user_input: message,
+    });
+
+    return response.data;
+  } catch (err) {
+    console.log(err)
+  } 
+}
+export async function getDoctorsBySpecialization(specializations: string[]) {
+  try {
+    // Use Query.equal to filter by specializations
+    const doctors = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.doctorCollectionId,
+      [Query.equal("specialization", specializations)] // Filters documents with any specialization in the array
+    );
+
+    if (!doctors.documents) {
+      throw new Error("No doctors found with the specified specializations.");
+    }
+
+    return doctors.documents;
+  } catch (error) {
+    console.error("Error fetching doctors:", error);
+    throw error;
   }
 }
 

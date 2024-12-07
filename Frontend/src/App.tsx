@@ -11,6 +11,7 @@ import { Toast } from "@radix-ui/react-toast";
 import DoctorSignUpForm from "./_auth/forms/DoctorSignUpForm";
 import { R } from "node_modules/@tanstack/react-query-devtools/build/modern/ReactQueryDevtools-Cn7cKi7o";
 import PatientSignUpForm from "./_auth/forms/PatientSignUpForm";
+import AppointmentsPage from "./_root/pages/AppointmentsPage";
 
 const App = () => {
   return (
@@ -32,6 +33,7 @@ const App = () => {
           <Route path="/settings" element={<Settings />} />
           <Route path="/inbox" element={<Inbox />} />
           <Route path="/doctor-details/:doctorId" element={<DoctorDetailsPage />} />
+          <Route path="/appointments/:userId" element={<AppointmentsPage />} />
         </Route>
       </Routes>
 

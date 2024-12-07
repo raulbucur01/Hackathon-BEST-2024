@@ -11,6 +11,8 @@ import {
   signOutAccount,
   createDoctorAccount,
   getDoctorDetails,
+  getDiagnosis,
+  getDoctorsBySpecialization
 } from "../api";
 import { INewPost, INewPatient, IUpdatePost, INewDoctor } from "@/types";
 import { QUERY_KEYS } from "./queryKeys";
@@ -33,6 +35,20 @@ export const useSignInAccount = () => {
       signInAccount(user),
   });
 };
+
+export const useGetDoctorsBySpecialization = (specializations: string[]) => {
+  return useQuery({
+    queryKey: ["getDoctorsBySpecialization", specializations], // Include specializations in the queryKey
+    queryFn: () => getDoctorsBySpecialization(specializations) // Use the specializations from the hook's argument
+  });
+};
+
+export const useGetDiagnosis = () => {
+  return useMutation({
+    mutationFn: (message: string) =>
+      getDiagnosis(message),
+  });
+}
 
 export const useSignOutAccount = () => {
   return useMutation({

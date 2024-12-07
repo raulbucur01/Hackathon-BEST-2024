@@ -7,6 +7,7 @@ export const appwriteConfig = {
   storageId: import.meta.env.VITE_APPWRITE_STORAGE_ID,
   patientCollectionId: import.meta.env.VITE_APPWRITE_PATIENT_COLLECTION_ID,
   doctorCollectionId: import.meta.env.VITE_APPWRITE_DOCTOR_COLLECTION_ID,
+  appointmentsCollectionId: import.meta.env.VITE_APPWRITE_APPOINTMENTS_COLLECTION_ID
 };
 
 export const client = new Client();
