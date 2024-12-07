@@ -158,7 +158,7 @@
     @apply flex justify-start items-center;
   }
 
-  .custom-scrollbar::-webkit-scrollbar {
+  /* .custom-scrollbar::-webkit-scrollbar {
     width: 3px;
     height: 3px;
     border-radius: 2px;
@@ -175,7 +175,7 @@
 
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background: #7878a3;
-  }
+  } */
 
   /* Modern thin scrollbar with dark colors */
   .custom-scrollbar::-webkit-scrollbar {
@@ -348,7 +348,7 @@
   }
 
   .shad-input {
-    @apply h-12 bg-dm-dark border-none placeholder:text-dm-secondary focus-visible:ring-1 focus-visible:ring-offset-1 ring-dm-secondary !important;
+    @apply h-10 bg-dm-dark border-none placeholder:text-dm-secondary focus-visible:ring-1 focus-visible:ring-offset-1 ring-dm-secondary !important;
   }
 
   .shad-textarea {

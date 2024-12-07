@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -23,25 +23,91 @@ import {
 import { useUserContext } from "@/context/AuthContext";
 import Select from "react-select";
 
-// Define the type for the skills options
-interface SkillOption {
+// Define the type for select options
+interface OptionType {
   value: string;
   label: string;
 }
 
-const skillOptions: SkillOption[] = [
-  { value: "communication", label: "Communication" },
-  { value: "teamwork", label: "Teamwork" },
-  { value: "PowerPoint", label: "PowerPoint" },
-  { value: "Angular", label: "Angular" },
-  { value: "C#", label: "C#" },
-  { value: "Excel", label: "Excel" },
-  { value: "Python", label: "Python" },
-  { value: "SQL", label: "SQL" },
-  { value: "adaptability", label: "Adaptability" },
-  { value: "C++", label: "C++" },
-  { value: "LINQ", label: "LINQ" },
+// Options for Allergies, Conditions, and Medications
+const allergyOptions: OptionType[] = [
+  { value: "peanuts", label: "Peanuts" },
+  { value: "shellfish", label: "Shellfish" },
+  { value: "gluten", label: "Gluten" },
+  { value: "lactose", label: "Lactose" },
+  { value: "pollen", label: "Pollen" },
 ];
+
+const conditionOptions: OptionType[] = [
+  { value: "diabetes", label: "Diabetes" },
+  { value: "hypertension", label: "Hypertension" },
+  { value: "asthma", label: "Asthma" },
+  { value: "arthritis", label: "Arthritis" },
+  { value: "migraines", label: "Migraines" },
+];
+
+const medicationOptions: OptionType[] = [
+  { value: "metformin", label: "Metformin" },
+  { value: "lisinopril", label: "Lisinopril" },
+  { value: "albuterol", label: "Albuterol" },
+  { value: "ibuprofen", label: "Ibuprofen" },
+  { value: "insulin", label: "Insulin" },
+];
+
+const customStyles = {
+  menu: (provided: any) => ({
+    ...provided,
+    backgroundColor: "#121212", // Black background
+    color: "#ffffff", // White text
+    maxHeight: "150px", // Max height of dropdown
+    overflowY: "auto", // Allow scrolling
+    zIndex: 9999, // Ensure dropdown is above other elements
+  }),
+  menuList: (provided: any) => ({
+    ...provided,
+    backgroundColor: "#121212", // Black background for the list
+    color: "#ffffff", // White text
+    padding: 0,
+    maxHeight: "100px", // Same height as `menu`
+    scrollbarWidth: "thin", // For Firefox, using thin scrollbar
+    scrollbarColor: "#555 #222", // For Firefox, using thin scrollbar
+    WebkitOverflowScrolling: "touch", // Smooth scrolling on mobile
+  }),
+  control: (provided: any) => ({
+    ...provided,
+    minHeight: "40px", // Ensure consistent height for the control
+    backgroundColor: "#121212", // Black background for the control
+    borderColor: "#444444", // Dark border color
+    color: "#ffffff", // White text
+    "&:hover": {
+      borderColor: "#666666", // Lighter border on hover
+    },
+  }),
+  singleValue: (provided: any) => ({
+    ...provided,
+    color: "#ffffff", // White text for the selected value
+  }),
+  placeholder: (provided: any) => ({
+    ...provided,
+    color: "#888888", // Light gray placeholder text
+  }),
+  option: (provided: any, state: any) => ({
+    ...provided,
+    backgroundColor: state.isSelected
+      ? "#333333" // Dark gray background for selected option
+      : state.isFocused
+      ? "#444444" // Darker gray when option is focused
+      : "#121212", // Default black background
+    color: "#ffffff", // White text for options
+    "&:hover": {
+      backgroundColor: "#444444", // Darker gray when hovered
+    },
+  }),
+  menuPortal: (provided: any) => ({
+    ...provided,
+    zIndex: 9999, // Ensure dropdown appears above other content
+  }),
+};
 
 const SignupForm = () => {
   const { toast } = useToast();
@@ -53,7 +119,15 @@ const SignupForm = () => {
   const { mutateAsync: signInAccount, isPending: isSigningIn } =
     useSignInAccount();
 
-  const [selectedSkills, setSelectedSkills] = useState<SkillOption[]>([]); // Correctly type selectedSkills
+  const [selectedAllergies, setSelectedAllergies] = useState<OptionType[]>([]);
+  const [selectedConditions, setSelectedConditions] = useState<OptionType[]>(
+    []
+  );
+  const [selectedMedications, setSelectedMedications] = useState<OptionType[]>(
+    []
+  );
+
+  const formRef = useRef<HTMLFormElement | null>(null); // Ref for the form
 
   const form = useForm<z.infer<typeof SignupValidation>>({
     resolver: zodResolver(SignupValidation),
@@ -66,38 +140,45 @@ const SignupForm = () => {
   });
 
   async function onSubmit(values: z.infer<typeof SignupValidation>) {
-    const newUser = await createUserAccount({
-      ...values,
-      skills: selectedSkills.map((skill) => skill.value),
-    });
+    console.log("values", values);
+    console.log("selectedAllergies", selectedAllergies);
+    console.log("selectedConditions", selectedConditions);
+    console.log("selectedMedications", selectedMedications);
 
-    if (!newUser) {
-      return toast({
-        title: "Sign Up failed, Please try again.",
-      });
-    }
+    // const newUser = await createUserAccount({
+    //   ...values,
+    //   allergies: selectedAllergies.map((item) => item.value),
+    //   conditions: selectedConditions.map((item) => item.value),
+    //   medications: selectedMedications.map((item) => item.value),
+    // });
 
-    const session = await signInAccount({
-      email: values.email,
-      password: values.password,
-    });
+    // if (!newUser) {
+    //   return toast({
+    //     title: "Sign Up failed, Please try again.",
+    //   });
+    // }
 
-    if (!session) {
-      return toast({
-        title: "Sign Up failed, Please try again.",
-      });
-    }
+    // const session = await signInAccount({
+    //   email: values.email,
+    //   password: values.password,
+    // });
 
-    const isLoggedIn = await checkAuthUser();
+    // if (!session) {
+    //   return toast({
+    //     title: "Sign Up failed, Please try again.",
+    //   });
+    // }
 
-    if (isLoggedIn) {
-      form.reset();
-      navigate("/");
-    } else {
-      return toast({
-        title: "Sign Up failed, Please try again.",
-      });
-    }
+    // const isLoggedIn = await checkAuthUser();
+
+    // if (isLoggedIn) {
+    //   form.reset();
+    //   navigate("/");
+    // } else {
+    //   return toast({
+    //     title: "Sign Up failed, Please try again.",
+    //   });
+    // }
   }
 
   return (
@@ -112,10 +193,11 @@ const SignupForm = () => {
           Please enter your details
         </p>
 
-        <div className="form-container w-full max-h-[80vh] overflow-y-auto px-4 py-2 border rounded-lg shadow-md custom-scrollbar">
+        <div className="form-container w-full max-h-[60vh] overflow-y-auto px-4 py-2 shadow-md custom-scrollbar">
           <form
             onSubmit={form.handleSubmit(onSubmit)}
             className="flex flex-col gap-2 mt-4"
+            ref={formRef}
           >
             <FormField
               control={form.control}
@@ -169,42 +251,77 @@ const SignupForm = () => {
                 </FormItem>
               )}
             />
-
             <div className="mt-4">
-              <FormLabel>Skills</FormLabel>
+              <FormLabel>Allergies</FormLabel>
               <Select
-                options={skillOptions}
+                options={allergyOptions}
                 isMulti
-                value={selectedSkills}
+                value={selectedAllergies}
                 onChange={(newValue) =>
-                  setSelectedSkills(newValue as SkillOption[])
-                } // Cast to SkillOption[]
-                className="basic-multi-select"
+                  setSelectedAllergies(newValue as OptionType[])
+                }
+                styles={customStyles}
                 classNamePrefix="select"
+                menuPortalTarget={document.body}
               />
             </div>
-
-            <Button type="submit" className="shad-button_primary mt-4">
-              {isCreatingAccount || isSigningIn || isUserLoading ? (
-                <div className="flex-center gap-2">
-                  <Loader />
-                  Loading...
-                </div>
-              ) : (
-                "Sign up"
-              )}
-            </Button>
-
-            <p className="text-small-regular text-light-2 text-center mt-2">
-              Already have an account?
-              <Link
-                to="/sign-in"
-                className="text-primary-500 text-small-semibold ml-1 hover:underline"
-              >
-                Sign in
-              </Link>
-            </p>
+            <div className="mt-4">
+              <FormLabel>Conditions</FormLabel>
+              <Select
+                options={conditionOptions}
+                isMulti
+                value={selectedConditions}
+                onChange={(newValue) =>
+                  setSelectedConditions(newValue as OptionType[])
+                }
+                styles={customStyles}
+                classNamePrefix="select"
+                menuPortalTarget={document.body}
+              />
+            </div>
+            <div className="mt-4">
+              <FormLabel>Medications</FormLabel>
+              <Select
+                options={medicationOptions}
+                isMulti
+                value={selectedMedications}
+                onChange={(newValue) =>
+                  setSelectedMedications(newValue as OptionType[])
+                }
+                styles={customStyles}
+                classNamePrefix="select"
+                menuPortalTarget={document.body}
+              />
+            </div>
           </form>
+        </div>
+
+        <div className="w-full px-4 mt-4">
+          <Button
+            type="submit"
+            className="shad-button_primary w-full"
+            onClick={() => {
+              form.handleSubmit(onSubmit)(); // Manually trigger the onSubmit function
+            }}
+          >
+            {isCreatingAccount || isSigningIn || isUserLoading ? (
+              <div className="flex-center gap-2">
+                <Loader />
+                Loading...
+              </div>
+            ) : (
+              "Sign up"
+            )}
+          </Button>
+          <p className="text-small-regular text-light-2 text-center mt-2">
+            Already have an account?
+            <Link
+              to="/sign-in"
+              className="text-primary-500 text-small-semibold ml-1 hover:underline"
+            >
+              Sign in
+            </Link>
+          </p>
         </div>
       </div>
     </Form>
