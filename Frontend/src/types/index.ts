@@ -43,17 +43,24 @@ export type IUpdatePost = {
 export type IUser = {
   id: string;
   name: string;
-  username: string;
   email: string;
   imageUrl: string;
 };
 
-export type INewUser = {
+export type INewPatient = {
   name: string;
   email: string;
-  username: string;
   password: string;
+  phone: string;
   medications: string[];
   allergies: string[];
   conditions: string[];
+};
+
+export type INewDoctor = {
+  name: string;
+  email: string;
+  password: string;
+  phone: string;
+  specialization: string;
 };

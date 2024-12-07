@@ -5,17 +5,24 @@ import {
   useInfiniteQuery,
 } from "@tanstack/react-query";
 import {
-  createUserAccount,
+  createPatientAccount,
   getCurrentUser,
   signInAccount,
   signOutAccount,
+  createDoctorAccount,
 } from "../api";
-import { INewPost, INewUser, IUpdatePost } from "@/types";
+import { INewPost, INewPatient, IUpdatePost, INewDoctor } from "@/types";
 import { QUERY_KEYS } from "./queryKeys";
 
-export const useCreateUserAccount = () => {
+export const useCreatePatientAccount = () => {
   return useMutation({
-    mutationFn: (user: INewUser) => createUserAccount(user),
+    mutationFn: (patient: INewPatient) => createPatientAccount(patient),
+  });
+};
+
+export const useCreateDoctorAccount = () => {
+  return useMutation({
+    mutationFn: (doctor: INewDoctor) => createDoctorAccount(doctor),
   });
 };
 

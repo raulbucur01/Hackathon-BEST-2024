@@ -1,30 +1,30 @@
 import { ID, ImageGravity, Query } from "appwrite";
 
-import { INewPost, INewUser, IUpdatePost } from "@/types";
+import { INewPost, INewPatient, IUpdatePost, INewDoctor } from "@/types";
 import { appwriteConfig, account, avatars, databases, storage } from "./config";
 
-export async function createUserAccount(user: INewUser) {
+export async function createPatientAccount(patient: INewPatient) {
   try {
     const newAccount = await account.create(
       ID.unique(),
-      user.email,
-      user.password,
-      user.name
+      patient.email,
+      patient.password,
+      patient.name
     );
 
     if (!newAccount) throw Error;
 
-    const avatarUrl = avatars.getInitials(user.name);
+    const avatarUrl = avatars.getInitials(patient.name);
 
-    const newUser = await saveUserToDB({
+    const newUser = await savePatientToDB({
       accountId: newAccount.$id,
       name: newAccount.name,
       email: newAccount.email,
-      username: user.username,
+      phone: patient.phone,
       imageUrl: new URL(avatarUrl),
-      allergies: user.allergies,
-      conditions: user.conditions,
-      medications: user.medications,
+      allergies: patient.allergies,
+      conditions: patient.conditions,
+      medications: patient.medications,
     });
 
     return newUser;
@@ -34,12 +34,12 @@ export async function createUserAccount(user: INewUser) {
   }
 }
 
-export async function saveUserToDB(user: {
+export async function savePatientToDB(patient: {
   accountId: string;
   email: string;
   name: string;
   imageUrl: URL;
-  username?: string;
+  phone: string;
   allergies?: string[];
   conditions?: string[];
   medications?: string[];
@@ -47,9 +47,60 @@ export async function saveUserToDB(user: {
   try {
     const newUser = await databases.createDocument(
       appwriteConfig.databaseId,
-      appwriteConfig.userCollectionId,
+      appwriteConfig.patientCollectionId,
       ID.unique(),
-      user
+      patient
+    );
+
+    return newUser;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function createDoctorAccount(doctor: INewDoctor) {
+  try {
+    const newAccount = await account.create(
+      ID.unique(),
+      doctor.email,
+      doctor.password,
+      doctor.name
+    );
+
+    if (!newAccount) throw Error;
+
+    const avatarUrl = avatars.getInitials(doctor.name);
+
+    const newUser = await saveDoctorToDB({
+      accountId: newAccount.$id,
+      name: newAccount.name,
+      email: newAccount.email,
+      phone: doctor.phone,
+      imageUrl: new URL(avatarUrl),
+      specialization: doctor.specialization,
+    });
+
+    return newUser;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+}
+
+export async function saveDoctorToDB(doctor: {
+  accountId: string;
+  email: string;
+  name: string;
+  imageUrl: URL;
+  phone: string;
+  specialization: string;
+}) {
+  try {
+    const newUser = await databases.createDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.doctorCollectionId,
+      ID.unique(),
+      doctor
     );
 
     return newUser;
@@ -68,6 +119,7 @@ export async function signInAccount(user: { email: string; password: string }) {
     return session;
   } catch (error) {
     console.log(error);
+    return null;
   }
 }
 
@@ -87,15 +139,27 @@ export async function getCurrentUser() {
 
     if (!currentAccount) throw Error;
 
-    const currentUser = await databases.listDocuments(
+    const currentPatient = await databases.listDocuments(
       appwriteConfig.databaseId,
-      appwriteConfig.userCollectionId,
+      appwriteConfig.patientCollectionId,
       [Query.equal("accountId", currentAccount.$id)]
     );
 
-    if (!currentUser) throw Error;
+    const currentDoctor = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.doctorCollectionId,
+      [Query.equal("accountId", currentAccount.$id)]
+    );
 
-    return currentUser.documents[0];
+    if (currentPatient.documents.length > 0) {
+      return currentPatient.documents[0];
+    }
+
+    if (currentDoctor.documents.length > 0) {
+      return currentDoctor.documents[0];
+    }
+
+    return null;
   } catch (error) {
     console.log(error);
     return null;

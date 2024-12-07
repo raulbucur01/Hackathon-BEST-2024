@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -13,11 +13,11 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { SignupValidation } from "@/lib/validation";
+import { PatientSignupValidation } from "@/lib/validation";
 import Loader from "@/components/shared/Loader";
 import { useToast } from "@/hooks/use-toast";
 import {
-  useCreateUserAccount,
+  useCreatePatientAccount,
   useSignInAccount,
 } from "@/lib/react-query/queriesAndMutations";
 import { useUserContext } from "@/context/AuthContext";
@@ -109,13 +109,13 @@ const customStyles = {
   }),
 };
 
-const SignupForm = () => {
+const PatientSignUpForm = () => {
   const { toast } = useToast();
   const { checkAuthUser, isLoading: isUserLoading } = useUserContext();
   const navigate = useNavigate();
 
-  const { mutateAsync: createUserAccount, isPending: isCreatingAccount } =
-    useCreateUserAccount();
+  const { mutateAsync: createPatientAccount, isPending: isCreatingAccount } =
+    useCreatePatientAccount();
   const { mutateAsync: signInAccount, isPending: isSigningIn } =
     useSignInAccount();
 
@@ -129,18 +129,18 @@ const SignupForm = () => {
 
   const formRef = useRef<HTMLFormElement | null>(null); // Ref for the form
 
-  const form = useForm<z.infer<typeof SignupValidation>>({
-    resolver: zodResolver(SignupValidation),
+  const form = useForm<z.infer<typeof PatientSignupValidation>>({
+    resolver: zodResolver(PatientSignupValidation),
     defaultValues: {
       name: "",
-      username: "",
+      phone: "",
       email: "",
       password: "",
     },
   });
 
-  async function onSubmit(values: z.infer<typeof SignupValidation>) {
-    const newUser = await createUserAccount({
+  async function onSubmit(values: z.infer<typeof PatientSignupValidation>) {
+    const newUser = await createPatientAccount({
       ...values,
       allergies: selectedAllergies.map((item) => item.value),
       conditions: selectedConditions.map((item) => item.value),
@@ -149,7 +149,7 @@ const SignupForm = () => {
 
     if (!newUser) {
       return toast({
-        title: "Sign Up failed, Please try again.",
+        title: "Sign Up failed, Please try again. Error creating user.",
       });
     }
 
@@ -160,7 +160,7 @@ const SignupForm = () => {
 
     if (!session) {
       return toast({
-        title: "Sign Up failed, Please try again.",
+        title: "Sign Up failed, Please try again. Error signing in.",
       });
     }
 
@@ -182,7 +182,7 @@ const SignupForm = () => {
         <img src="/assets/images/logo.svg" alt="Logo" />
 
         <h2 className="h3-bold md:h2-bold pt-5 sm:pt-12">
-          Create a new account
+          Create a patient account
         </h2>
         <p className="text-light-3 small-medium md:base-regular mt-2">
           Please enter your details
@@ -209,10 +209,10 @@ const SignupForm = () => {
             />
             <FormField
               control={form.control}
-              name="username"
+              name="phone"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel>Phone</FormLabel>
                   <FormControl>
                     <Input type="text" className="shad-input" {...field} />
                   </FormControl>
@@ -323,4 +323,4 @@ const SignupForm = () => {
   );
 };
 
-export default SignupForm;
+export default PatientSignUpForm;

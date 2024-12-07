@@ -1,4 +1,4 @@
-import SignupForm from "./_auth/forms/SignupForm";
+import Signup from "./_auth/forms/Signup";
 import SigninForm from "./_auth/forms/SigninForm";
 import AuthLayout from "./_auth/AuthLayout";
 import RootLayout from "./_root/RootLayout";
@@ -8,6 +8,9 @@ import "./globals.css";
 import { Routes, Route } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
 import { Toast } from "@radix-ui/react-toast";
+import DoctorSignUpForm from "./_auth/forms/DoctorSignUpForm";
+import { R } from "node_modules/@tanstack/react-query-devtools/build/modern/ReactQueryDevtools-Cn7cKi7o";
+import PatientSignUpForm from "./_auth/forms/PatientSignUpForm";
 
 const App = () => {
   return (
@@ -16,7 +19,9 @@ const App = () => {
         {/* public routes */}
         <Route element={<AuthLayout />}>
           <Route path="/sign-in" element={<SigninForm />} />
-          <Route path="/sign-up" element={<SignupForm />} />
+          <Route path="/sign-up" element={<Signup />} />
+          <Route path="/sign-up/doctor" element={<DoctorSignUpForm />} />
+          <Route path="/sign-up/patient" element={<PatientSignUpForm />} />
         </Route>
 
         {/* private routes */}
