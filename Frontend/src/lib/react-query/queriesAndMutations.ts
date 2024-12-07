@@ -10,6 +10,7 @@ import {
   signInAccount,
   signOutAccount,
   createDoctorAccount,
+  getDoctorDetails,
 } from "../api";
 import { INewPost, INewPatient, IUpdatePost, INewDoctor } from "@/types";
 import { QUERY_KEYS } from "./queryKeys";
@@ -43,5 +44,13 @@ export const useGetCurrentUser = () => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_CURRENT_USER],
     queryFn: getCurrentUser,
+  });
+};
+
+export const useGetDoctorDetails = (doctorId: string | undefined) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_DOCTOR_DETAILS, doctorId],
+    queryFn: () => getDoctorDetails(doctorId as string),
+    enabled: !!doctorId, // Only fetch if doctorId exists
   });
 };

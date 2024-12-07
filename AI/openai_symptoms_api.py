@@ -78,7 +78,7 @@ def get_medical_field(diagnosis):
     Provides the suggested medical field(s) based on the diagnosis using OpenAI GPT.
     """
     messages = [
-        {"role": "system", "content": "You are an assistant specializing in mapping medical diagnoses to relevant medical fields (e.g., Radiology, Dermatology, Psychiatry). Keep responses brief and clear."},
+        {"role": "system", "content": "You are an assistant specializing in mapping medical diagnoses to relevant medical fields (e.g., Radiology, Dermatology, Psychiatry). Respond with just the word(s) of the field(s) separated by comma."},
         {"role": "user",
          "content": f"Based on the diagnosis: \"{diagnosis}\", which medical field(s) should the patient consult?"}
     ]

@@ -216,3 +216,22 @@ export async function signOutAccount() {
 //     console.log(error);
 //   }
 // }
+
+export async function getDoctorDetails(doctorId: string) {
+  try {
+    if (!doctorId) {
+      throw new Error("Doctor ID is required");
+    }
+
+    const doctor = await databases.getDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.doctorCollectionId,
+      doctorId
+    );
+
+    return doctor;
+  } catch (error) {
+    console.error("Error fetching doctor details:", error);
+    throw error;
+  }
+}
