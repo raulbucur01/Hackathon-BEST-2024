@@ -184,7 +184,7 @@ const PatientSignUpForm = () => {
         <h2 className="h3-bold md:h2-bold pt-5 sm:pt-12">
           Create a patient account
         </h2>
-        <p className="text-light-3 small-medium md:base-regular mt-2">
+        <p className="text-dm-light small-medium md:base-regular mt-2">
           Please enter your details
         </p>
 
@@ -308,7 +308,7 @@ const PatientSignUpForm = () => {
                     <Link
                       to="/user-agreement"
                       target="_blank"
-                      className="text-primary-500 hover:underline"
+                      className="text-dm-accent hover:underline"
                       onClick={(e) => {
                         e.stopPropagation();
                         e.preventDefault();
@@ -321,7 +321,7 @@ const PatientSignUpForm = () => {
                     <Link
                       to="/gdpr"
                       target="_blank"
-                      className="text-primary-500 hover:underline"
+                      className="text-dm-accent hover:underline"
                       onClick={(e) => {
                         e.stopPropagation();
                         e.preventDefault();
@@ -340,9 +340,9 @@ const PatientSignUpForm = () => {
         <div className="w-full px-4 mt-4">
           <Button
             type="submit"
-            className={`shad-button_primary py-2 px-4${
+            className={`bg-dm-dark hover:bg-dm-secondary py-2 px-4${
               !form.watch("gdprAgreement")
-                ? "opacity-50 cursor-not-allowed"
+                ? "opacity-50 cursor-not-allowed bg-dm-dark"
                 : ""
             } w-[200px] ml-[calc(50%-100px)]`}
             disabled={!form.watch("gdprAgreement")}
@@ -364,7 +364,7 @@ const PatientSignUpForm = () => {
             Already have an account?
             <Link
               to="/sign-in"
-              className="text-primary-500 text-small-semibold ml-1 hover:underline"
+              className="text-dm-accent text-small-semibold ml-1 hover:underline"
             >
               Sign in
             </Link>

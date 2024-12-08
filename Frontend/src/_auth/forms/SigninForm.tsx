@@ -69,7 +69,7 @@ const SigninForm = () => {
         <h2 className="h3-bold md:h2-bold pt-5 sm:pt-12">
           Log in to your account
         </h2>
-        <p className="text-light-3 small-medium md:base-regular mt-2">
+        <p className="text-dm-accent small-medium md:base-regular mt-2">
           Welcome back! Please enter your details.
         </p>
 
@@ -104,7 +104,10 @@ const SigninForm = () => {
             )}
           />
 
-          <Button type="submit" className="shad-button_primary mt-4 w-[200px] ml-[calc(50%-100px)]">
+          <Button
+            type="submit"
+            className="mt-4 w-[200px] ml-[calc(50%-100px)] bg-dm-dark hover:bg-dm-secondary"
+          >
             {isUserLoading || isSigningIn ? (
               <div className="flex-center gap-2">
                 <Loader />
@@ -119,7 +122,7 @@ const SigninForm = () => {
             Don't have an account?
             <Link
               to="/sign-up"
-              className="text-primary-500 text-small-semibold ml-1 hover:underline"
+              className="text-dm-accent text-small-semibold ml-1 hover:underline"
             >
               Sign up
             </Link>
