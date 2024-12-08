@@ -94,11 +94,11 @@ const LeftSidebar = () => {
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
-                <SidebarMenuItem key={item.title} className="">
+                <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <a
                       href={item.url}
-                      className="flex items-center gap-3 p-2 rounded-md hover:bg-dm-sec"
+                      className="flex items-center gap-3 p-2 rounded-md hover:bg-muahaha"
                     >
                       <item.icon size={18} className="text-dm-light" />
                       <span className="text-sm font-medium text-dm-light">
