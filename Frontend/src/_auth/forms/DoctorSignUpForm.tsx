@@ -81,6 +81,14 @@ const DoctorSignUpForm = () => {
   return (
     <Form {...form}>
       <div className="sm:w-420 flex-center flex-col">
+        {/* Go Back Button */}
+        <Button
+          onClick={() => navigate("/sign-up")}
+          className="absolute top-[20rem] left-[32rem] text-sm text-dm-light opacity-50 hover:bg-opacity-100 transition duration-300 ease-in-out"
+        >
+          {"<"}
+        </Button>
+
         <img src="/assets/images/logo.svg" />
 
         <h2 className="h3-bold md:h2-bold pt-5 sm:pt-12">
@@ -164,7 +172,10 @@ const DoctorSignUpForm = () => {
             )}
           />
 
-          <Button type="submit" className="shad-button_primary mt-4 w-[200px] ml-[calc(50%-100px)]">
+          <Button
+            type="submit"
+            className="bg-dm-dark hover:bg-dm-secondary mt-4 w-[200px] ml-[calc(50%-100px)]"
+          >
             {isCreatingAccount || isUserLoading || isSigningIn ? (
               <div className="flex-center gap-2">
                 <Loader />
@@ -179,7 +190,7 @@ const DoctorSignUpForm = () => {
             Already have an account?
             <Link
               to="/sign-in"
-              className="text-primary-500 text-small-semibold ml-1 hover:underline"
+              className="text-dm-accent text-small-semibold ml-1 hover:underline"
             >
               Sign in
             </Link>

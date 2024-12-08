@@ -179,12 +179,12 @@
 
   /* Modern thin scrollbar with dark colors */
   .custom-scrollbar::-webkit-scrollbar {
-    width: 6px; /* Adjust scrollbar width */
+    width: 10px; /* Adjust scrollbar width */
     height: 6px; /* Adjust scrollbar height for horizontal scrollbars */
   }
 
   .custom-scrollbar::-webkit-scrollbar-track {
-    background: #1f1f1f; /* Dark background for the scrollbar track */
+    background: #1b0d0d; /* Dark background for the scrollbar track */
     border-radius: 10px; /* Rounded corners for track */
   }
 
@@ -201,6 +201,9 @@
   .common-container {
     @apply flex flex-col flex-1 items-center gap-10 overflow-scroll py-10 px-5 md:px-8 lg:p-14 custom-scrollbar;
   }
+
+  /* Prevent focus outline */
+
 
   /* All Users */
   .user-container {

@@ -92,6 +92,11 @@ const Profile = () => {
               {mockedStatsData.doctorStats.avgResponseTime}
             </span>
           </p>
+        {/* Edit Profile Button */}
+        <div className="text-center">
+          <button className="px-6 py-2 bg-dm-dark text-dm-light rounded-md hover:bg-dm-secondary transition-colors">
+            Edit Profile
+          </button>
         </div>
       </div>
     </div>

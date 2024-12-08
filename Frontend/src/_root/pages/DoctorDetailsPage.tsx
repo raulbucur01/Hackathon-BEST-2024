@@ -13,9 +13,14 @@ const DoctorDetailsPage = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error loading doctor details. Please try again later.</div>;
-  if (!doctor) return <div>Doctor not found.</div>;
+  if (isLoading) return <div className="text-dm-light">Loading...</div>;
+  if (error)
+    return (
+      <div className="text-dm-accent">
+        Error loading doctor details. Please try again later.
+      </div>
+    );
+  if (!doctor) return <div className="text-dm-accent">Doctor not found.</div>;
 
   const handleMakeAppointment = async () => {
     if (!selectedDate) return alert("Please select a date.");
@@ -42,45 +47,66 @@ const DoctorDetailsPage = () => {
   };
 
   return (
-    <div className="p-6">
-      <h1 className="text-3xl font-bold">{doctor.name}</h1>
-      <img src={doctor.imageUrl} alt={doctor.name} className="w-32 h-32 mt-4" />
-      <p className="mt-4">Specialization: {doctor.specialization}</p>
-      <p className="mt-2">Contact: {doctor.phone}</p>
-      <p className="mt-2">Email: {doctor.email}</p>
+    <div className="flex items-center justify-center min-h-screen bg-dm-dark text-dm-light">
+      <div className="p-6 bg-dm-dark-2 rounded-lg shadow-lg max-w-md w-full">
+        {/* Doctor Info Section */}
+        <div className="flex flex-col items-center md:flex-row md:items-start md:space-x-6">
+          <img
+            src={doctor.imageUrl}
+            alt={doctor.name}
+            className="w-[160px] h-[160px] mt-4 rounded-full border-4 border-dm-secondary"
+          />
+          <div className="mt-4 md:mt-0 text-center md:text-left">
+            <h1 className="text-3xl font-bold text-dm-light">{doctor.name}</h1>
+            <p className="mt-2 text-dm-light">
+              Specialization: {doctor.specialization}
+            </p>
+            <p className="mt-2 text-dm-light">Contact: {doctor.phone}</p>
+            <p className="mt-2 text-dm-light">Email: {doctor.email}</p>
+          </div>
+        </div>
 
-      <button
-        onClick={() => setModalOpen(true)}
-        className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-md"
-      >
-        Make Appointment
-      </button>
-
-      {isModalOpen && (
-        <Modal onClose={() => setModalOpen(false)}>
-          <h2>Select an Available Date</h2>
-          <ul>
-            {doctor.availableDates.map((date: string) => (
-              <li key={date}>
-                <button
-                  onClick={() => setSelectedDate(date)}
-                  className={`px-4 py-2 border ${
-                    selectedDate === date ? "bg-blue-500 text-white" : ""
-                  }`}
-                >
-                  {new Date(date).toLocaleString()}
-                </button>
-              </li>
-            ))}
-          </ul>
+        {/* Make Appointment Button */}
+        <div className="flex justify-center mt-6">
           <button
-            onClick={handleMakeAppointment}
-            className="mt-4 bg-green-500 text-white px-4 py-2 rounded-md"
+            onClick={() => setModalOpen(true)}
+            className="bg-dm-dark text-dm-light px-6 py-3 rounded-md transition-all duration-200 hover:bg-dm-secondary focus:outline-none"
           >
-            Confirm Appointment
+            Make Appointment
           </button>
-        </Modal>
-      )}
+        </div>
+
+        {/* Modal */}
+        {isModalOpen && (
+          <Modal onClose={() => setModalOpen(false)}>
+            <h2 className="text-xl font-semibold text-dm-light mb-4">
+              Select an Available Date
+            </h2>
+            <ul className="space-y-2">
+              {doctor.availableDates.map((date: string) => (
+                <li key={date}>
+                  <button
+                    onClick={() => setSelectedDate(date)}
+                    className={`w-full text-left px-4 py-2 border border-dm-secondary text-dm-light rounded-md ${
+                      selectedDate === date
+                        ? "bg-dm-secondary text-dm-light"
+                        : "bg-dm-dark text-dm-light"
+                    } hover:bg-dm-secondary hover:text-dm-light text-dm-light transition-all duration-200`}
+                  >
+                    {new Date(date).toLocaleString()}
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <button
+              onClick={handleMakeAppointment}
+              className="mt-4 bg-dm-dark text-dm-light px-6 py-3 rounded-md transition-all duration-200 hover:bg-dm-secondary focus:outline-none"
+            >
+              Confirm Appointment
+            </button>
+          </Modal>
+        )}
+      </div>
     </div>
   );
 };

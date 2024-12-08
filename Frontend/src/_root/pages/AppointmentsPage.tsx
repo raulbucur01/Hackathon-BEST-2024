@@ -47,8 +47,8 @@ const AppointmentsPage = () => {
       const roomName = `room-${appointment.$id}`;
       console.log(roomName);
       const identity = isDoctor
-        ? appointment.doctor?.name
-        : appointment.patient.name;
+        ? appointment.patient.name // If doctor, display patient's name
+        : appointment.doctor?.name; // If patient, display doctor's name
 
       const response = await fetch(
         "https://ai-backend-611700556817.us-central1.run.app/generate-token",
@@ -79,7 +79,12 @@ const AppointmentsPage = () => {
     return <VideoRoom token={token} roomName={roomName} />;
   }
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <div className="bg-dm-dark h-screen flex items-center justify-center">
+        <Loader />
+      </div>
+    );
   if (error)
     return <div>Error loading appointments. Please try again later.</div>;
 
@@ -113,15 +118,21 @@ const AppointmentsPage = () => {
             return (
               <li
                 key={appointment.$id}
-                className="bg-dm-dark-2 hover:bg-dm-secondary p-4 rounded-lg shadow-lg transition-colors"
+                className="bg-dm-dark hover:bg-dm-dark p-4 rounded-lg shadow-lg transition-colors"
               >
                 <div className="flex justify-between items-center space-x-4">
                   <div className="flex flex-col">
                     <p className="text-xl font-semibold text-dm-light">
-                      Doctor: {appointment.doctor.name}
+                      {isDoctor
+                        ? `Patient: ${appointment.patient.name}`
+                        : `Doctor: ${appointment.doctor.name}`}
                     </p>
                     <p className="text-sm text-dm-accent">
-                      Specialization: {appointment.doctor.specialization}
+                      {!isDoctor
+                        ? `Specialization: ${appointment.doctor?.specialization}`
+                        : `Appointment Date: ${new Date(
+                            appointment.date
+                          ).toLocaleString()}`}
                     </p>
                   </div>
                   <p className="text-sm text-dm-accent text-right">
@@ -135,7 +146,7 @@ const AppointmentsPage = () => {
                     disabled={!isJoinEnabled}
                     className={`px-4 py-2 rounded-md font-semibold transition ${
                       isJoinEnabled
-                        ? "bg-green-500 hover:bg-green-600 text-white"
+                        ? "bg-green-500 hover:bg-green-300 text-white"
                         : "bg-gray-500 text-gray-300 cursor-not-allowed"
                     }`}
                   >
@@ -145,7 +156,7 @@ const AppointmentsPage = () => {
                   {isDoctor && (
                     <button
                       onClick={() => handleViewReport(appointment)}
-                      className="px-4 py-2 rounded-md bg-blue-500 hover:bg-blue-600 text-white font-semibold"
+                      className="px-4 py-2 rounded-md bg-dm-dark-2 hover:bg-dm-secondary text-white font-semibold"
                     >
                       View Report
                     </button>
