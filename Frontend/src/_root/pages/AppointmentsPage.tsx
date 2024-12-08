@@ -42,6 +42,7 @@ const AppointmentsPage = () => {
   const handleJoinClick = async (appointment: Appointment) => {
     try {
       const roomName = `room-${appointment.$id}`;
+      console.log(roomName)
       const identity = isDoctor ? appointment.doctor.name : appointment.patient.name;
   
       const response = await fetch("https://ai-backend-611700556817.us-central1.run.app/generate-token", {
