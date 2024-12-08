@@ -67,6 +67,7 @@ const AppointmentsPage = () => {
     setModalOpen(true);
   };
 
+
   if (isJoining && token && roomName) {
     return <VideoRoom token={token} roomName={roomName} />;
   }

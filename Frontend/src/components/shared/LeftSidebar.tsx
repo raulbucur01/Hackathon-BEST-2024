@@ -7,6 +7,8 @@ import {
   LogOut,
   Loader,
   Calendar,
+  Cuboid,
+  FileHeart,
 } from "lucide-react";
 import {
   Sidebar,
@@ -46,6 +48,11 @@ const items = [
     title: "Inbox",
     url: "/inbox",
     icon: Inbox,
+  },
+  {
+    title: "Health Assistant",
+    url: "/health-assistant",
+    icon: FileHeart,
   },
   {
     title: "AI Chat History",
@@ -91,10 +98,10 @@ const LeftSidebar = () => {
                   <SidebarMenuButton asChild>
                     <a
                       href={item.url}
-                      className="flex items-center gap-3 p-2 text-dm-light hover:bg-dm-secondary hover:text-dm-light rounded-md transition-colors"
+                      className="flex items-center gap-4 p-3 text-dm-light hover:bg-dm-secondary hover:text-dm-light rounded-md transition-colors"
                     >
-                      <item.icon size={18} className="text-dm-light" />
-                      <span className="text-sm font-medium">{item.title}</span>
+                      <item.icon size={24} className="text-dm-light" />
+                      <span className="text-lg font-medium">{item.title}</span>
                     </a>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
