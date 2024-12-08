@@ -88,20 +88,22 @@ const LeftSidebar = () => {
       <SidebarContent>
         {/* Sidebar Menu */}
         <SidebarGroup>
-          <SidebarGroupLabel className="text-dm-light font-semibold text-sm uppercase mb-4 px-4">
+          <SidebarGroupLabel className="text-dm-light font-semibold text-sm uppercase">
             APP NAME
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
+                <SidebarMenuItem key={item.title} className="">
                   <SidebarMenuButton asChild>
                     <a
                       href={item.url}
-                      className="flex items-center gap-4 p-3 text-dm-light hover:bg-dm-secondary hover:text-dm-light rounded-md transition-colors"
+                      className="flex items-center gap-3 p-2 rounded-md hover:bg-dm-sec"
                     >
-                      <item.icon size={24} className="text-dm-light" />
-                      <span className="text-lg font-medium">{item.title}</span>
+                      <item.icon size={18} className="text-dm-light" />
+                      <span className="text-sm font-medium text-dm-light">
+                        {item.title}
+                      </span>
                     </a>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -110,7 +112,7 @@ const LeftSidebar = () => {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter className="bg-dm-dark-2 p-4 border-t border-dm-dark">
+      <SidebarFooter className="bg-dm-dark-2 p-4">
         <NavUser user={userInfo} />
       </SidebarFooter>
     </Sidebar>
