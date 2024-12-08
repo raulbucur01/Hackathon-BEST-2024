@@ -1,7 +1,7 @@
 const UserAgreement = () => {
   return (
     <div className="container mx-auto p-6 bg-gray-900 text-white">
-      <h1 className="text-4xl font-extrabold text-center mb-6 text-indigo-500">
+      <h1 className="text-4xl font-extrabold text-center mb-6 text-dm-light">
         User Agreement
       </h1>
       <div className="text-lg max-h-[80vh] overflow-y-auto p-6 bg-gray-800 rounded-lg shadow-lg custom-scrollbar">
@@ -10,7 +10,7 @@ const UserAgreement = () => {
           carefully. By using our services, you agree to the terms and
           conditions outlined below.
         </p>
-        <h2 className="text-2xl font-semibold mb-2 text-indigo-400">
+        <h2 className="text-2xl font-semibold mb-2 text-dm-light">
           1. Introduction
         </h2>
         <p className="mb-4">
@@ -18,7 +18,7 @@ const UserAgreement = () => {
           website and services. This agreement outlines your rights and
           responsibilities, and our policies regarding the use of our platform.
         </p>
-        <h2 className="text-2xl font-semibold mb-2 text-indigo-400">
+        <h2 className="text-2xl font-semibold mb-2 text-dm-light">
           2. User Responsibilities
         </h2>
         <p className="mb-4">
@@ -26,7 +26,7 @@ const UserAgreement = () => {
           information when registering, Keep your account details confidential,
           and Comply with all applicable laws and regulations.
         </p>
-        <h2 className="text-2xl font-semibold mb-2 text-indigo-400">
+        <h2 className="text-2xl font-semibold mb-2 text-dm-light">
           3. Service Usage
         </h2>
         <p className="mb-4">
@@ -35,7 +35,7 @@ const UserAgreement = () => {
           services responsibly and in accordance with the terms outlined in this
           agreement.
         </p>
-        <h2 className="text-2xl font-semibold mb-2 text-indigo-400">
+        <h2 className="text-2xl font-semibold mb-2 text-dm-light">
           4. Termination of Account
         </h2>
         <p className="mb-4">
@@ -43,7 +43,7 @@ const UserAgreement = () => {
           violate the terms of this agreement. In the event of termination, you
           will lose access to your account and any associated data.
         </p>
-        <h2 className="text-2xl font-semibold mb-2 text-indigo-400">
+        <h2 className="text-2xl font-semibold mb-2 text-dm-light">
           5. Limitations of Liability
         </h2>
         <p className="mb-4">
