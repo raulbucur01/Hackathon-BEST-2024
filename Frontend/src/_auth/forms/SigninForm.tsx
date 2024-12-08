@@ -64,10 +64,10 @@ const SigninForm = () => {
   return (
     <Form {...form}>
       <div className="sm:w-420 flex-center flex-col">
-        <img src="/assets/images/logo.svg" />
+        <img src="public/assets/logo-no-background.svg" className="mt-5" />
 
         <h2 className="h3-bold md:h2-bold pt-5 sm:pt-12">
-          Log in to your account
+          Sign in to your account
         </h2>
         <p className="text-dm-accent small-medium md:base-regular mt-2">
           Welcome back! Please enter your details.
