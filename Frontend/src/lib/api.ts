@@ -128,18 +128,19 @@ export async function createAppointment({
   patientId,
   doctorId,
   date,
+  report,
 }: {
   patientId: string;
   doctorId: string;
   date: string;
+  report: { symptoms: string[]; diagnosis: string }; // Add report parameter
 }) {
   try {
-    console.log("Creating appointment with:", { patientId, doctorId, date });
-
+    // Add the appointment to the `appointments` table
     await databases.createDocument(
       appwriteConfig.databaseId,
       appwriteConfig.appointmentsCollectionId,
-      ID.unique(), // Ensures valid document ID
+      ID.unique(),
       {
         patient: patientId,
         doctor: doctorId,
@@ -147,12 +148,30 @@ export async function createAppointment({
       }
     );
 
+    // Fetch the doctor details to update their reports
     const doctor = await databases.getDocument(
       appwriteConfig.databaseId,
       appwriteConfig.doctorCollectionId,
       doctorId
     );
 
+    // Convert the report object to a string
+    const reportString = JSON.stringify(report);
+
+    // Append the new report string to the existing reports array
+    const updatedReports = [...(doctor.reports || []), reportString];
+
+    // Update the doctor's reports field
+    await databases.updateDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.doctorCollectionId,
+      doctorId,
+      {
+        reports: updatedReports,
+      }
+    );
+
+    // Update availableDates (remove the selected date)
     const updatedDates = (doctor.availableDates || []).filter(
       (availableDate: string) => availableDate !== date
     );
@@ -161,16 +180,19 @@ export async function createAppointment({
       appwriteConfig.databaseId,
       appwriteConfig.doctorCollectionId,
       doctorId,
-      { availableDates: updatedDates }
+      {
+        availableDates: updatedDates,
+      }
     );
 
-    console.log("Appointment created successfully.");
     return true;
   } catch (error) {
-    console.error("Error creating appointment:", error);
+    console.error("Error creating appointment or updating report:", error);
     throw error;
   }
 }
+
+
 
 export async function getAppointmentsForUser(patientId: string) {
   try {

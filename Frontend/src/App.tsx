@@ -19,6 +19,7 @@ import { Toaster } from "@/components/ui/toaster";
 import DoctorSignUpForm from "./_auth/forms/DoctorSignUpForm";
 import PatientSignUpForm from "./_auth/forms/PatientSignUpForm";
 import AppointmentsPage from "./_root/pages/AppointmentsPage";
+import HealthAssistant from "./_root/pages/HealthAssistant";
 
 const App = () => {
   return (
@@ -41,11 +42,9 @@ const App = () => {
           <Route path="/profile" element={<Profile />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/inbox" element={<Inbox />} />
-          <Route
-            path="/doctor-details/:doctorId"
-            element={<DoctorDetailsPage />}
-          />
           <Route path="/appointments" element={<AppointmentsPage />} />
+          <Route path="/doctor-details/:doctorId" element={<DoctorDetailsPage />} />
+          <Route path="/health-assistant" element={<HealthAssistant />} />
         </Route>
       </Routes>
 
