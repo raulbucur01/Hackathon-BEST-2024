@@ -202,6 +202,25 @@
     @apply flex flex-col flex-1 items-center gap-10 overflow-scroll py-10 px-5 md:px-8 lg:p-14 custom-scrollbar;
   }
 
+  /* Prevent focus outline */
+  a:focus {
+    outline: none;
+  }
+
+  /* Apply consistent background color for active and hover states */
+  a:hover {
+    background-color: #355b6e; /* Your hover color */
+  }
+
+  a:active {
+    background-color: #355b6e; /* Ensure it stays the same when clicked */
+  }
+
+  /* Optional: If you want to ensure the background color remains consistent when focused */
+  a:focus {
+    background-color: #355b6e;
+  }
+
   /* All Users */
   .user-container {
     @apply max-w-5xl flex flex-col items-start w-full gap-6 md:gap-9;

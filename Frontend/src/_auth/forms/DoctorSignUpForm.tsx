@@ -164,7 +164,10 @@ const DoctorSignUpForm = () => {
             )}
           />
 
-          <Button type="submit" className="shad-button_primary mt-4 w-[200px] ml-[calc(50%-100px)]">
+          <Button
+            type="submit"
+            className="bg-dm-dark hover:bg-dm-secondary mt-4 w-[200px] ml-[calc(50%-100px)]"
+          >
             {isCreatingAccount || isUserLoading || isSigningIn ? (
               <div className="flex-center gap-2">
                 <Loader />
@@ -179,7 +182,7 @@ const DoctorSignUpForm = () => {
             Already have an account?
             <Link
               to="/sign-in"
-              className="text-primary-500 text-small-semibold ml-1 hover:underline"
+              className="text-dm-accent text-small-semibold ml-1 hover:underline"
             >
               Sign in
             </Link>
