@@ -2,7 +2,7 @@ import Signup from "./_auth/forms/Signup";
 import SigninForm from "./_auth/forms/SigninForm";
 import AuthLayout from "./_auth/AuthLayout";
 import RootLayout from "./_root/RootLayout";
-import { Home, Search, Profile, Settings, Inbox, DoctorDetailsPage} from "./_root/pages";
+import { Home, Search, Profile, Settings, Inbox, DoctorDetailsPage, PatientStatsPage} from "./_root/pages";
 // later can import more pages with "," so we have one line of code respectively one import from pages
 import "./globals.css";
 import { Routes, Route } from "react-router-dom";
@@ -32,6 +32,7 @@ const App = () => {
           <Route path="/settings" element={<Settings />} />
           <Route path="/inbox" element={<Inbox />} />
           <Route path="/doctor-details/:doctorId" element={<DoctorDetailsPage />} />
+          <Route path="/stats" element={<PatientStatsPage />} />
         </Route>
       </Routes>
 
