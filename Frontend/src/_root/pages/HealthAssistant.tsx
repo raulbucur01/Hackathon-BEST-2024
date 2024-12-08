@@ -129,13 +129,18 @@ const HealthAssistant = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
                     {doctors.map((doctor) => (
                       <Link
-                        to={`/doctor-details/${doctor.$id}`}
-                        key={doctor.$id}
-                        className="block bg-blue-100 hover:bg-blue-200 transition p-4 rounded-lg shadow-md"
-                      >
-                        <h4 className="text-lg font-bold text-blue-700">{doctor.name}</h4>
-                        <p className="text-gray-600">{doctor.specialization}</p>
-                      </Link>
+                      to={`/doctor-details/${doctor.$id}`}
+                      state={{
+                        report: {
+                          symptoms: responseData.symptoms,
+                          diagnosis: responseData.diagnosis,
+                        },
+                      }}
+                      className="text-blue-500 hover:underline"
+                    >
+                      {doctor.name}
+                    </Link>
+                    
                     ))}
                   </div>
                 </div>

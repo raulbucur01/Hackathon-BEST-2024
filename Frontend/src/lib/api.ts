@@ -133,10 +133,15 @@ export async function createAppointment({
   patientId: string;
   doctorId: string;
   date: string;
-  report: { symptoms: string[]; diagnosis: string }; // Add report parameter
+  report: { symptoms: string[]; diagnosis: string };
 }) {
   try {
-    // Add the appointment to the `appointments` table
+    console.log("Creating appointment with:", { patientId, doctorId, date, report });
+
+    // Convert the report object to a string
+    const reportString = JSON.stringify(report);
+    console.log(reportString)
+    // Create the appointment with the report
     await databases.createDocument(
       appwriteConfig.databaseId,
       appwriteConfig.appointmentsCollectionId,
@@ -145,33 +150,16 @@ export async function createAppointment({
         patient: patientId,
         doctor: doctorId,
         date,
+        report: reportString, // Save the report as a string
       }
     );
 
-    // Fetch the doctor details to update their reports
     const doctor = await databases.getDocument(
       appwriteConfig.databaseId,
       appwriteConfig.doctorCollectionId,
       doctorId
     );
 
-    // Convert the report object to a string
-    const reportString = JSON.stringify(report);
-
-    // Append the new report string to the existing reports array
-    const updatedReports = [...(doctor.reports || []), reportString];
-
-    // Update the doctor's reports field
-    await databases.updateDocument(
-      appwriteConfig.databaseId,
-      appwriteConfig.doctorCollectionId,
-      doctorId,
-      {
-        reports: updatedReports,
-      }
-    );
-
-    // Update availableDates (remove the selected date)
     const updatedDates = (doctor.availableDates || []).filter(
       (availableDate: string) => availableDate !== date
     );
@@ -180,28 +168,29 @@ export async function createAppointment({
       appwriteConfig.databaseId,
       appwriteConfig.doctorCollectionId,
       doctorId,
-      {
-        availableDates: updatedDates,
-      }
+      { availableDates: updatedDates }
     );
-
+    console.log("Appointment created successfully.");
     return true;
   } catch (error) {
-    console.error("Error creating appointment or updating report:", error);
+    console.error("Error creating appointment:", error);
     throw error;
   }
 }
 
 
-
-export async function getAppointmentsForUser(patientId: string) {
+export async function getAppointmentsForUser(userId: string, isDoctor: boolean) {
   try {
-    console.log("Fetching appointments for user ID:", patientId);
+    console.log(
+      `Fetching appointments for user ID: ${userId}, isDoctor: ${isDoctor}`
+    );
 
+    // Query based on the user type
+    const queryField = isDoctor ? "doctor" : "patient";
     const appointments = await databases.listDocuments(
       appwriteConfig.databaseId,
       appwriteConfig.appointmentsCollectionId,
-      [Query.equal("patient", patientId)]
+      [Query.equal(queryField, userId)] // Dynamically query based on user type
     );
 
     console.log("Fetched appointments from database:", appointments.documents);
@@ -216,25 +205,35 @@ export async function getAppointmentsForUser(patientId: string) {
           return appointment; // Skip invalid entries
         }
 
-        const doctor = await databases.getDocument(
-          appwriteConfig.databaseId,
-          appwriteConfig.doctorCollectionId,
-          appointment.doctor
-        );
-        return { ...appointment, doctor };
+        // Fetch doctor or patient details as necessary
+        const userDetails = isDoctor
+          ? await databases.getDocument(
+              appwriteConfig.databaseId,
+              appwriteConfig.patientCollectionId,
+              appointment.patient
+            )
+          : await databases.getDocument(
+              appwriteConfig.databaseId,
+              appwriteConfig.doctorCollectionId,
+              appointment.doctor
+            );
+
+        return { ...appointment, userDetails };
       })
     );
 
     console.log(
-      "Appointments enriched with doctor details:",
+      "Appointments enriched with additional user details:",
       appointmentDetails
     );
+
     return appointmentDetails;
   } catch (error) {
     console.error("Error fetching appointments:", error);
     throw error;
   }
 }
+
 
 export async function getDiagnosis(message: string) {
   try {
