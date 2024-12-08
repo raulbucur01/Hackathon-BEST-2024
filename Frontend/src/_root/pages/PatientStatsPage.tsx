@@ -36,8 +36,10 @@ const PatientStatsPage = () => {
 
         {/* Consultations Over Time */}
         <div className="bg-dm-dark-2 p-4 rounded-lg shadow-lg">
-          <h2 className="text-2xl font-semibold mb-4">Consultations Over Time</h2>
-          <ConsultationChart />
+          <h3 className="text-xl font-semibold mb-2 text-dm-light">Consultations Over Time</h3>
+          <div className="chart-container">
+            <ConsultationChart />
+          </div>
         </div>
 
         {/* Doctor Interactions */}

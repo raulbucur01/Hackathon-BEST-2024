@@ -1,0 +1,10 @@
+/* Ensure all text inside the chart is white */
+.google-visualization-chart text {
+    fill: #ffffff !important;
+  }
+  
+  /* Adjust gridline colors */
+  .google-visualization-gridline {
+    stroke: #4b5563 !important; /* Darker grey for gridlines */
+  }
+  
