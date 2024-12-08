@@ -6,6 +6,9 @@ import {
   Settings,
   LogOut,
   Loader,
+  Calendar,
+  Cuboid,
+  FileHeart,
 } from "lucide-react";
 import {
   Sidebar,
@@ -37,9 +40,24 @@ const items = [
     icon: User,
   },
   {
+    title: "Appointments",
+    url: "/appointments",
+    icon: Calendar,
+  },
+  {
     title: "Inbox",
     url: "/inbox",
     icon: Inbox,
+  },
+  {
+    title: "Health Assistant",
+    url: "/health-assistant",
+    icon: FileHeart,
+  },
+  {
+    title: "AI Chat History",
+    url: "/ai-chat-history",
+    icon: Loader,
   },
   {
     title: "Search",
@@ -64,13 +82,13 @@ const LeftSidebar = () => {
 
   return (
     <Sidebar
-      className="h-screen flex flex-col justify-between bg-gray-50"
+      className="h-screen flex flex-col justify-between bg-dm-dark-2 text-dm-light"
       collapsible="none"
     >
       <SidebarContent>
         {/* Sidebar Menu */}
         <SidebarGroup>
-          <SidebarGroupLabel className="text-gray-700 font-semibold text-sm uppercase">
+          <SidebarGroupLabel className="text-dm-light font-semibold text-sm uppercase mb-4 px-4">
             APP NAME
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -80,10 +98,10 @@ const LeftSidebar = () => {
                   <SidebarMenuButton asChild>
                     <a
                       href={item.url}
-                      className="flex items-center gap-3 p-2 text-gray-700 hover:bg-gray-100 rounded-md"
+                      className="flex items-center gap-4 p-3 text-dm-light hover:bg-dm-secondary hover:text-dm-light rounded-md transition-colors"
                     >
-                      <item.icon size={18} className="text-gray-500" />
-                      <span className="text-sm font-medium">{item.title}</span>
+                      <item.icon size={24} className="text-dm-light" />
+                      <span className="text-lg font-medium">{item.title}</span>
                     </a>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -92,7 +110,7 @@ const LeftSidebar = () => {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter>
+      <SidebarFooter className="bg-dm-dark-2 p-4 border-t border-dm-dark">
         <NavUser user={userInfo} />
       </SidebarFooter>
     </Sidebar>
