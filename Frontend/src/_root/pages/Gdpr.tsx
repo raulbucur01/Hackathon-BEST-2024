@@ -1,7 +1,7 @@
 const GdprPage = () => {
   return (
     <div className="container mx-auto p-6 bg-gray-900 text-white">
-      <h1 className="text-4xl font-extrabold text-center mb-6 text-indigo-500">
+      <h1 className="text-4xl font-extrabold text-center mb-6 text-dm-light">
         GDPR Privacy Policy
       </h1>
       <div className="text-lg max-h-[80vh] overflow-y-auto p-6 bg-gray-800 rounded-lg shadow-lg custom-scrollbar">
@@ -10,7 +10,7 @@ const GdprPage = () => {
           personal data in accordance with the General Data Protection
           Regulation (GDPR). Please read the following carefully.
         </p>
-        <h2 className="text-2xl font-semibold mb-2 text-indigo-400">
+        <h2 className="text-2xl font-semibold mb-2 text-dm-light">
           1. Introduction
         </h2>
         <p className="mb-4">
@@ -19,7 +19,7 @@ const GdprPage = () => {
           this policy, we outline the types of personal data we collect, how we
           use it, and the rights you have in relation to your data.
         </p>
-        <h2 className="text-2xl font-semibold mb-2 text-indigo-400">
+        <h2 className="text-2xl font-semibold mb-2 text-dm-light">
           2. Data Collection
         </h2>
         <p className="mb-4">
@@ -32,7 +32,7 @@ const GdprPage = () => {
             </li>
           </ul>
         </p>
-        <h2 className="text-2xl font-semibold mb-2 text-indigo-400">
+        <h2 className="text-2xl font-semibold mb-2 text-dm-light">
           3. How We Use Your Data
         </h2>
         <p className="mb-4">
@@ -40,7 +40,7 @@ const GdprPage = () => {
           Communicate with you about your account, Improve our website and
           services.
         </p>
-        <h2 className="text-2xl font-semibold mb-2 text-indigo-400">
+        <h2 className="text-2xl font-semibold mb-2 text-dm-light">
           4. Your Rights
         </h2>
         <p className="mb-4">
