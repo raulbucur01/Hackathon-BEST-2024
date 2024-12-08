@@ -2,14 +2,21 @@ import Signup from "./_auth/forms/Signup";
 import SigninForm from "./_auth/forms/SigninForm";
 import AuthLayout from "./_auth/AuthLayout";
 import RootLayout from "./_root/RootLayout";
-import { Home, Search, Profile, Settings, Inbox, DoctorDetailsPage} from "./_root/pages";
+import {
+  Home,
+  Search,
+  Profile,
+  Settings,
+  Inbox,
+  DoctorDetailsPage,
+  GdprPage,
+  UserAgreement,
+} from "./_root/pages";
 // later can import more pages with "," so we have one line of code respectively one import from pages
 import "./globals.css";
 import { Routes, Route } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
-import { Toast } from "@radix-ui/react-toast";
 import DoctorSignUpForm from "./_auth/forms/DoctorSignUpForm";
-import { R } from "node_modules/@tanstack/react-query-devtools/build/modern/ReactQueryDevtools-Cn7cKi7o";
 import PatientSignUpForm from "./_auth/forms/PatientSignUpForm";
 import AppointmentsPage from "./_root/pages/AppointmentsPage";
 
@@ -23,6 +30,8 @@ const App = () => {
           <Route path="/sign-up" element={<Signup />} />
           <Route path="/sign-up/doctor" element={<DoctorSignUpForm />} />
           <Route path="/sign-up/patient" element={<PatientSignUpForm />} />
+          <Route path="/gdpr" element={<GdprPage />} />
+          <Route path="/user-agreement" element={<UserAgreement />} />
         </Route>
 
         {/* private routes */}
@@ -32,8 +41,11 @@ const App = () => {
           <Route path="/profile" element={<Profile />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/inbox" element={<Inbox />} />
-          <Route path="/doctor-details/:doctorId" element={<DoctorDetailsPage />} />
-          <Route path="/appointments/:userId" element={<AppointmentsPage />} />
+          <Route
+            path="/doctor-details/:doctorId"
+            element={<DoctorDetailsPage />}
+          />
+          <Route path="/appointments" element={<AppointmentsPage />} />
         </Route>
       </Routes>
 

@@ -294,7 +294,7 @@ const PatientSignUpForm = () => {
               control={form.control}
               name="gdprAgreement"
               render={({ field }) => (
-                <FormItem className="flex items-start gap-2 mt-4">
+                <FormItem className="flex items-center gap-2 mt-4 ml-3">
                   <FormControl>
                     <input
                       type="checkbox"
@@ -304,11 +304,16 @@ const PatientSignUpForm = () => {
                     />
                   </FormControl>
                   <FormLabel className="text-sm text-gray-300">
-                    I agree to the{" "}
+                    I agree with the{" "}
                     <Link
-                      to="/terms"
+                      to="/user-agreement"
                       target="_blank"
                       className="text-primary-500 hover:underline"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        navigate("/user-agreement");
+                      }}
                     >
                       User Agreement
                     </Link>{" "}
@@ -317,6 +322,11 @@ const PatientSignUpForm = () => {
                       to="/gdpr"
                       target="_blank"
                       className="text-primary-500 hover:underline"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        navigate("/gdpr");
+                      }}
                     >
                       GDPR Privacy Policy
                     </Link>
@@ -330,7 +340,7 @@ const PatientSignUpForm = () => {
         <div className="w-full px-4 mt-4">
           <Button
             type="submit"
-            className={`shad-button_primary py-2 px-4 text-base ${
+            className={`shad-button_primary py-2 px-4${
               !form.watch("gdprAgreement")
                 ? "opacity-50 cursor-not-allowed"
                 : ""

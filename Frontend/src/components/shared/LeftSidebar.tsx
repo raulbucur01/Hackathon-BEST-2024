@@ -6,6 +6,7 @@ import {
   Settings,
   LogOut,
   Loader,
+  Calendar,
 } from "lucide-react";
 import {
   Sidebar,
@@ -37,6 +38,11 @@ const items = [
     icon: User,
   },
   {
+    title: "Appointments",
+    url: "/appointments",
+    icon: Calendar,
+  },
+  {
     title: "Inbox",
     url: "/inbox",
     icon: Inbox,
@@ -64,13 +70,13 @@ const LeftSidebar = () => {
 
   return (
     <Sidebar
-      className="h-screen flex flex-col justify-between bg-gray-50"
+      className="h-screen flex flex-col justify-between bg-dm-dark-2 text-dm-light"
       collapsible="none"
     >
       <SidebarContent>
         {/* Sidebar Menu */}
         <SidebarGroup>
-          <SidebarGroupLabel className="text-gray-700 font-semibold text-sm uppercase">
+          <SidebarGroupLabel className="text-dm-accent font-semibold text-sm uppercase">
             APP NAME
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -80,9 +86,9 @@ const LeftSidebar = () => {
                   <SidebarMenuButton asChild>
                     <a
                       href={item.url}
-                      className="flex items-center gap-3 p-2 text-gray-700 hover:bg-gray-100 rounded-md"
+                      className="flex items-center gap-3 p-2 text-dm-light hover:bg-dm-secondary hover:text-dm-light rounded-md transition-colors"
                     >
-                      <item.icon size={18} className="text-gray-500" />
+                      <item.icon size={18} className="text-dm-light" />
                       <span className="text-sm font-medium">{item.title}</span>
                     </a>
                   </SidebarMenuButton>
@@ -92,7 +98,7 @@ const LeftSidebar = () => {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter>
+      <SidebarFooter className="bg-dm-dark-2 p-4">
         <NavUser user={userInfo} />
       </SidebarFooter>
     </Sidebar>
