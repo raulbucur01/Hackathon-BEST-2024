@@ -24,11 +24,7 @@ const AppointmentsPage = () => {
   const [token, setToken] = useState<string | null>(null);
   const [roomName, setRoomName] = useState("");
 
-  const {
-    data: appointments,
-    isLoading,
-    error,
-  } = useQuery<Appointment[]>({
+  const { data: appointments, isLoading, error } = useQuery<Appointment[]>({
     queryKey: ["userAppointments"],
     queryFn: async () => {
       const currentUser = await getCurrentUser();
@@ -42,10 +38,10 @@ const AppointmentsPage = () => {
   });
 
   const navigate = useNavigate();
+
   const handleJoinClick = async (appointment: Appointment) => {
     try {
       const roomName = `room-${appointment.$id}`;
-      console.log(roomName);
       const identity = isDoctor
         ? appointment.patient.name // If doctor, display patient's name
         : appointment.doctor?.name; // If patient, display doctor's name
@@ -75,9 +71,12 @@ const AppointmentsPage = () => {
     setModalOpen(true);
   };
 
-  if (isJoining && token && roomName) {
-    return <VideoRoom token={token} roomName={roomName} />;
-  }
+  const isJoinEnabledLogic = (appointmentDate: Date): boolean => {
+    const now = new Date();
+    const diffMinutes = (now.getTime() - appointmentDate.getTime()) / 60000;
+
+    return diffMinutes >= 0 && diffMinutes <= 10;
+  };
 
   if (isLoading)
     return (
@@ -101,7 +100,6 @@ const AppointmentsPage = () => {
         <ul className="space-y-4">
           {appointments?.map((appointment) => {
             if (!appointment.doctor) {
-              // Handle the case where doctor is null or undefined
               return (
                 <li
                   key={appointment.$id}
@@ -114,7 +112,9 @@ const AppointmentsPage = () => {
               );
             }
 
-            const isJoinEnabled = new Date() >= new Date(appointment.date);
+            const appointmentDate = new Date(appointment.date);
+            const isJoinEnabled = isJoinEnabledLogic(appointmentDate);
+
             return (
               <li
                 key={appointment.$id}
@@ -130,13 +130,11 @@ const AppointmentsPage = () => {
                     <p className="text-sm text-dm-accent">
                       {!isDoctor
                         ? `Specialization: ${appointment.doctor?.specialization}`
-                        : `Appointment Date: ${new Date(
-                            appointment.date
-                          ).toLocaleString()}`}
+                        : `Appointment Date: ${appointmentDate.toLocaleString()}`}
                     </p>
                   </div>
                   <p className="text-sm text-dm-accent text-right">
-                    {new Date(appointment.date).toLocaleString()}
+                    {appointmentDate.toLocaleString()}
                   </p>
                 </div>
 
