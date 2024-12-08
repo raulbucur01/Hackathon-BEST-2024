@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getAppointmentsForUser, getCurrentUser } from "@/lib/api";
-import {Modal} from "@/components/ui/Modal"; // Assuming a Modal component exists
-
+import { Modal } from "@/components/ui/Modal"; // Assuming a Modal component exists
+import { useUserContext } from "@/context/AuthContext";
+import Loader from "@/components/shared/Loader";
 type Appointment = {
   $id: string;
   doctor: { name: string; specialization: string };
@@ -12,44 +13,45 @@ type Appointment = {
 };
 
 const AppointmentsPage = () => {
-    const [isDoctor, setIsDoctor] = useState(false); // Determines if the user is a doctor
-    const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null);
-    const [isModalOpen, setModalOpen] = useState(false);
-  
-    // Fetch appointments based on user type
-    const {
-      data: appointments,
-      isLoading,
-      error,
-    } = useQuery<Appointment[]>({
-      queryKey: ["userAppointments"],
-      queryFn: async () => {
-        const currentUser = await getCurrentUser();
-  
-        if (!currentUser) throw new Error("User not logged in.");
-  
-        // Determine if the user is a doctor or a patient
-        const userIsDoctor = !!currentUser.specialization;
-        setIsDoctor(userIsDoctor);
-  
-        // Use the updated `getAppointmentsForUser` method
-        return getAppointmentsForUser(currentUser.$id, userIsDoctor);
-      },
-    });
-  
-    const handleJoinClick = (appointment: Appointment) => {
-      console.log(`Joining meeting for appointment ID: ${appointment.$id}`);
-      // Implement join functionality here
-    };
-  
-    const handleViewReport = (appointment: Appointment) => {
-      setSelectedAppointment(appointment);
-      setModalOpen(true);
-    };
-  
-    if (isLoading) return <div>Loading...</div>;
-    if (error)
-      return <div>Error loading appointments. Please try again later.</div>;
+  const [isDoctor, setIsDoctor] = useState(false); // Determines if the user is a doctor
+  const [selectedAppointment, setSelectedAppointment] =
+    useState<Appointment | null>(null);
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  // Fetch appointments based on user type
+  const {
+    data: appointments,
+    isLoading,
+    error,
+  } = useQuery<Appointment[]>({
+    queryKey: ["userAppointments"],
+    queryFn: async () => {
+      const currentUser = await getCurrentUser();
+
+      if (!currentUser) throw new Error("User not logged in.");
+
+      // Determine if the user is a doctor or a patient
+      const userIsDoctor = !!currentUser.specialization;
+      setIsDoctor(userIsDoctor);
+
+      // Use the updated `getAppointmentsForUser` method
+      return getAppointmentsForUser(currentUser.$id, userIsDoctor);
+    },
+  });
+
+  const handleJoinClick = (appointment: Appointment) => {
+    console.log(`Joining meeting for appointment ID: ${appointment.$id}`);
+    // Implement join functionality here
+  };
+
+  const handleViewReport = (appointment: Appointment) => {
+    setSelectedAppointment(appointment);
+    setModalOpen(true);
+  };
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error)
+    return <div>Error loading appointments. Please try again later.</div>;
 
   return (
     <div className="min-h-screen bg-dm-dark text-dm-light p-6">
@@ -116,10 +118,12 @@ const AppointmentsPage = () => {
               <strong>Patient Name:</strong> {selectedAppointment.patient.name}
             </p>
             <p className="mb-2">
-              <strong>Patient Email:</strong> {selectedAppointment.patient.email}
+              <strong>Patient Email:</strong>{" "}
+              {selectedAppointment.patient.email}
             </p>
             <p className="mb-4">
-              <strong>Report:</strong> {selectedAppointment.report || "No report available"}
+              <strong>Report:</strong>{" "}
+              {selectedAppointment.report || "No report available"}
             </p>
             <button
               onClick={() => setModalOpen(false)}

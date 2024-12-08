@@ -13,3 +13,4 @@ export { default as DoctorDetailsPage } from "./DoctorDetailsPage";
 export { default as AppointmentsPage } from "./AppointmentsPage";
 export { default as GdprPage } from "./Gdpr";
 export { default as UserAgreement } from "./UserAgreement";
+export { default as AIChatHistory } from "./AIChatHistory";

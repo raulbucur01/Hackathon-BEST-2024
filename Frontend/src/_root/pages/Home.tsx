@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getCurrentUser } from "@/lib/api"; // Assume this function gets the current user from Appwrite
 
@@ -30,21 +30,25 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-100 to-gray-300 flex flex-col items-center justify-center px-4">
-      <h1 className="text-4xl font-bold text-gray-900 mb-8">Welcome to Our Platform</h1>
-      <p className="text-lg text-gray-700 mb-6">
+    <div className="min-h-screen bg-dm-dark flex flex-col items-center justify-center px-6">
+      <h1 className="text-4xl font-bold text-dm-light mb-8">
+        Welcome to Our Platform
+      </h1>
+      <p className="text-lg text-dm-accent mb-6 text-center">
         Explore features like Health Assistant, Doctor Appointments, and more.
       </p>
-      <div className="flex gap-4">
+      <div className="flex gap-6">
+        {/* Health Assistant Button */}
         <Link
           to="/health-assistant"
-          className="px-6 py-3 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+          className="px-6 py-3 bg-dm-dark-2 text-white rounded-md hover:bg-dm-secondary transition duration-200"
         >
           Go to Health Assistant
         </Link>
+        {/* Appointments Button */}
         <button
           onClick={handleViewAppointments}
-          className="px-6 py-3 bg-green-500 text-white rounded-md hover:bg-green-600"
+          className="px-6 py-3 bg-dm-dark-2 text-white rounded-md hover:bg-dm-secondary transition duration-200"
         >
           View Appointments
         </button>

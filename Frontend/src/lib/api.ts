@@ -4,6 +4,50 @@ import { INewPatient, INewDoctor } from "@/types";
 import { appwriteConfig, account, avatars, databases, storage } from "./config";
 import axios from "axios";
 
+export async function getAIChatHistory(patientId: string): Promise<string[]> {
+  try {
+    const document = await databases.getDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.patientCollectionId,
+      patientId
+    );
+
+    return document.aiChatHistory || [];
+  } catch (error) {
+    console.error("Error fetching AI chat history:", error);
+    return [];
+  }
+}
+
+export async function addAIChatHistory(patientId: string, message: string) {
+  try {
+    // Fetch the current document using the document ID
+    const response = await databases.getDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.patientCollectionId,
+      patientId
+    );
+
+    // Get the current AI chat history array and append the new message
+    const updatedChatHistory = response.aiChatHistory || [];
+    updatedChatHistory.push(message);
+
+    // Update the document with the new AI chat history array
+    await databases.updateDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.patientCollectionId,
+      patientId,
+      {
+        aiChatHistory: updatedChatHistory,
+      }
+    );
+
+    console.log("Message successfully added to AI chat history");
+  } catch (error) {
+    console.error("Error updating AI chat history:", error);
+  }
+}
+
 export async function createPatientAccount(patient: INewPatient) {
   try {
     const newAccount = await account.create(

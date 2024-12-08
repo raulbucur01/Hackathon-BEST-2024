@@ -11,6 +11,7 @@ import {
   DoctorDetailsPage,
   GdprPage,
   UserAgreement,
+  AIChatHistory,
 } from "./_root/pages";
 // later can import more pages with "," so we have one line of code respectively one import from pages
 import "./globals.css";
@@ -43,10 +44,13 @@ const App = () => {
           <Route path="/settings" element={<Settings />} />
           <Route path="/inbox" element={<Inbox />} />
           <Route path="/appointments" element={<AppointmentsPage />} />
-          <Route path="/doctor-details/:doctorId" element={<DoctorDetailsPage />} />
-
+          <Route
+            path="/doctor-details/:doctorId"
+            element={<DoctorDetailsPage />}
+          />
 
           <Route path="/health-assistant" element={<HealthAssistant />} />
+          <Route path="/ai-chat-history" element={<AIChatHistory />} />
         </Route>
       </Routes>
 
