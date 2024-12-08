@@ -1,32 +1,24 @@
+import { useUserContext } from "@/context/AuthContext";
 import React from "react";
 
 const Profile = () => {
+  const { user } = useUserContext();
+
   return (
     <div className="min-h-screen bg-dm-dark py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto bg-dm-dark-2 shadow-md rounded-lg p-6">
         {/* Profile Header */}
         <div className="flex items-center space-x-6 mb-6">
           <img
-            src="https://via.placeholder.com/150"
+            src={user.imageUrl}
             alt="Profile Picture"
             className="w-32 h-32 rounded-full object-cover"
           />
           <div>
-            <h1 className="text-3xl font-semibold text-dm-light">John Doe</h1>
-            <p className="text-lg text-dm-accent">Software Developer</p>
+            <h1 className="text-3xl font-semibold text-dm-light">
+              {user.name}
+            </h1>
           </div>
-        </div>
-
-        {/* Profile Details */}
-        <div className="mb-6">
-          <h2 className="text-2xl font-semibold text-dm-light mb-2">
-            About Me
-          </h2>
-          <p className="text-dm-light">
-            I'm a passionate software developer with a focus on front-end
-            technologies. I enjoy building user-centric applications and
-            collaborating with teams to deliver high-quality products.
-          </p>
         </div>
 
         {/* Contact Information */}
@@ -35,7 +27,7 @@ const Profile = () => {
             Contact Information
           </h2>
           <ul className="text-dm-light">
-            <li>Email: johndoe@example.com</li>
+            <li>Email: {user.email}</li>
             <li>Phone: +123 456 7890</li>
             <li>Location: San Francisco, CA</li>
           </ul>

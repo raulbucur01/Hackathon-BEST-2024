@@ -88,7 +88,7 @@ const LeftSidebar = () => {
       <SidebarContent>
         {/* Sidebar Menu */}
         <SidebarGroup>
-          <SidebarGroupLabel className="text-dm-accent font-semibold text-sm uppercase">
+          <SidebarGroupLabel className="text-dm-light font-semibold text-sm uppercase mb-4 px-4">
             APP NAME
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -110,7 +110,7 @@ const LeftSidebar = () => {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter className="bg-dm-dark-2 p-4">
+      <SidebarFooter className="bg-dm-dark-2 p-4 border-t border-dm-dark">
         <NavUser user={userInfo} />
       </SidebarFooter>
     </Sidebar>
