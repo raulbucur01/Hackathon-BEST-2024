@@ -9,7 +9,6 @@ const RootLayout = () => {
       <SidebarProvider>
         <LeftSidebar />
 
-
       {/* Main Content Section */}
       <section className="flex flex-1 h-full">
         <main className="w-full h-full overflow-y-auto">

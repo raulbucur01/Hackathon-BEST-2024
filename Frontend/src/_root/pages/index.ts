@@ -10,6 +10,7 @@ export { default as Inbox } from "./Inbox";
 export { default as Settings } from "./Settings";
 export { default as Profile } from "./Profile";
 export { default as DoctorDetailsPage } from "./DoctorDetailsPage";
+export { default as PatientStatsPage } from "./PatientStatsPage";
 export { default as AppointmentsPage } from "./AppointmentsPage";
 export { default as GdprPage } from "./Gdpr";
 export { default as UserAgreement } from "./UserAgreement";

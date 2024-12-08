@@ -12,6 +12,8 @@ import {
   GdprPage,
   UserAgreement,
   AIChatHistory,
+  DoctorDetailsPage,
+  PatientStatsPage
 } from "./_root/pages";
 // later can import more pages with "," so we have one line of code respectively one import from pages
 import "./globals.css";
@@ -62,6 +64,7 @@ const App = () => {
           <Route path="/profile" element={<Profile />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/inbox" element={<Inbox />} />
+          <Route path="/stats" element={<PatientStatsPage />} />
           <Route path="/appointments" element={<AppointmentsPage />} />
           <Route
             path="/doctor-details/:doctorId"
