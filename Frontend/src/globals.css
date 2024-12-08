@@ -179,12 +179,12 @@
 
   /* Modern thin scrollbar with dark colors */
   .custom-scrollbar::-webkit-scrollbar {
-    width: 6px; /* Adjust scrollbar width */
+    width: 10px; /* Adjust scrollbar width */
     height: 6px; /* Adjust scrollbar height for horizontal scrollbars */
   }
 
   .custom-scrollbar::-webkit-scrollbar-track {
-    background: #1f1f1f; /* Dark background for the scrollbar track */
+    background: #1b0d0d; /* Dark background for the scrollbar track */
     border-radius: 10px; /* Rounded corners for track */
   }
 
@@ -203,23 +203,7 @@
   }
 
   /* Prevent focus outline */
-  a:focus {
-    outline: none;
-  }
 
-  /* Apply consistent background color for active and hover states */
-  a:hover {
-    background-color: #355b6e; /* Your hover color */
-  }
-
-  a:active {
-    background-color: #355b6e; /* Ensure it stays the same when clicked */
-  }
-
-  /* Optional: If you want to ensure the background color remains consistent when focused */
-  a:focus {
-    background-color: #355b6e;
-  }
 
   /* All Users */
   .user-container {

@@ -81,6 +81,14 @@ const DoctorSignUpForm = () => {
   return (
     <Form {...form}>
       <div className="sm:w-420 flex-center flex-col">
+        {/* Go Back Button */}
+        <Button
+          onClick={() => navigate("/sign-up")}
+          className="absolute top-[20rem] left-[32rem] text-sm text-dm-light opacity-50 hover:bg-opacity-100 transition duration-300 ease-in-out"
+        >
+          {"<"}
+        </Button>
+
         <img src="/assets/images/logo.svg" />
 
         <h2 className="h3-bold md:h2-bold pt-5 sm:pt-12">
