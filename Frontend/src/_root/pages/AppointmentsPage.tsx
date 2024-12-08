@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getAppointmentsForUser, getCurrentUser } from "@/lib/api";
-import { Modal } from "@/components/ui/Modal";
 import VideoRoom from "./VideoRoom";
 import { generateTwilioToken } from "@/utils/twilioUtils";
 import { useNavigate } from "react-router-dom";
 
 
+import { Modal } from "@/components/ui/Modal"; // Assuming a Modal component exists
+import { useUserContext } from "@/context/AuthContext";
+import Loader from "@/components/shared/Loader";
 type Appointment = {
   $id: string;
   doctor: { name: string; specialization: string };
@@ -129,10 +131,12 @@ const AppointmentsPage = () => {
               <strong>Patient Name:</strong> {selectedAppointment.patient.name}
             </p>
             <p className="mb-2">
-              <strong>Patient Email:</strong> {selectedAppointment.patient.email}
+              <strong>Patient Email:</strong>{" "}
+              {selectedAppointment.patient.email}
             </p>
             <p className="mb-4">
-              <strong>Report:</strong> {selectedAppointment.report || "No report available"}
+              <strong>Report:</strong>{" "}
+              {selectedAppointment.report || "No report available"}
             </p>
             <button
               onClick={() => setModalOpen(false)}

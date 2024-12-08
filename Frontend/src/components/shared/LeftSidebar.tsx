@@ -48,6 +48,11 @@ const items = [
     icon: Inbox,
   },
   {
+    title: "AI Chat History",
+    url: "/ai-chat-history",
+    icon: Loader,
+  },
+  {
     title: "Search",
     url: "/search",
     icon: Search,

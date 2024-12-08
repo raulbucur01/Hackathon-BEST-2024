@@ -12,10 +12,19 @@ import {
   createDoctorAccount,
   getDoctorDetails,
   getDiagnosis,
-  getDoctorsBySpecialization
+  getDoctorsBySpecialization,
+  getAIChatHistory,
 } from "../api";
 import { INewPatient, INewDoctor } from "@/types";
 import { QUERY_KEYS } from "./queryKeys";
+
+export const useGetAIChatHistory = (patientId: string) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_AI_CHAT_HISTORY, patientId],
+    queryFn: () => getAIChatHistory(patientId),
+    enabled: !!patientId,
+  });
+};
 
 export const useCreatePatientAccount = () => {
   return useMutation({
@@ -39,16 +48,15 @@ export const useSignInAccount = () => {
 export const useGetDoctorsBySpecialization = (specializations: string[]) => {
   return useQuery({
     queryKey: ["getDoctorsBySpecialization", specializations], // Include specializations in the queryKey
-    queryFn: () => getDoctorsBySpecialization(specializations) // Use the specializations from the hook's argument
+    queryFn: () => getDoctorsBySpecialization(specializations), // Use the specializations from the hook's argument
   });
 };
 
 export const useGetDiagnosis = () => {
   return useMutation({
-    mutationFn: (message: string) =>
-      getDiagnosis(message),
+    mutationFn: (message: string) => getDiagnosis(message),
   });
-}
+};
 
 export const useSignOutAccount = () => {
   return useMutation({
