@@ -89,7 +89,7 @@ const DoctorSignUpForm = () => {
           {"<"}
         </Button>
 
-        <img src="/assets/images/logo.svg" />
+        <img src="/public/assets/logo-no-background.svg" className="mt-5" />
 
         <h2 className="h3-bold md:h2-bold pt-5 sm:pt-12">
           Create a doctor account

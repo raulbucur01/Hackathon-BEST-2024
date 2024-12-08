@@ -31,6 +31,7 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-dm-dark flex flex-col items-center justify-center px-6">
+      <img src="/public/assets/logo-no-background.svg" className="mt-5 mb-20" />
       <h1 className="text-4xl font-bold text-dm-light mb-8">
         Welcome to Our Platform
       </h1>
