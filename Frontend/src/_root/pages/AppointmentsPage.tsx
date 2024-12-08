@@ -1,6 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getAppointmentsForUser, getCurrentUser } from "@/lib/api";
+import VideoRoom from "./VideoRoom";
+import { generateTwilioToken } from "@/utils/twilioUtils";
+import { useNavigate } from "react-router-dom";
+
+
 import { Modal } from "@/components/ui/Modal"; // Assuming a Modal component exists
 import { useUserContext } from "@/context/AuthContext";
 import Loader from "@/components/shared/Loader";
@@ -9,39 +14,52 @@ type Appointment = {
   doctor: { name: string; specialization: string };
   patient: { name: string; email: string };
   date: string;
-  report?: string; // Optional report field
+  report?: string;
 };
 
 const AppointmentsPage = () => {
-  const [isDoctor, setIsDoctor] = useState(false); // Determines if the user is a doctor
-  const [selectedAppointment, setSelectedAppointment] =
-    useState<Appointment | null>(null);
+  const [isDoctor, setIsDoctor] = useState(false);
+  const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null);
   const [isModalOpen, setModalOpen] = useState(false);
+  const [isJoining, setIsJoining] = useState(false);
+  const [token, setToken] = useState<string | null>(null);
+  const [roomName, setRoomName] = useState("");
 
-  // Fetch appointments based on user type
-  const {
-    data: appointments,
-    isLoading,
-    error,
-  } = useQuery<Appointment[]>({
+  const { data: appointments, isLoading, error } = useQuery<Appointment[]>({
     queryKey: ["userAppointments"],
     queryFn: async () => {
       const currentUser = await getCurrentUser();
-
       if (!currentUser) throw new Error("User not logged in.");
 
-      // Determine if the user is a doctor or a patient
       const userIsDoctor = !!currentUser.specialization;
       setIsDoctor(userIsDoctor);
 
-      // Use the updated `getAppointmentsForUser` method
       return getAppointmentsForUser(currentUser.$id, userIsDoctor);
     },
   });
 
-  const handleJoinClick = (appointment: Appointment) => {
-    console.log(`Joining meeting for appointment ID: ${appointment.$id}`);
-    // Implement join functionality here
+  const navigate = useNavigate();
+  const handleJoinClick = async (appointment: Appointment) => {
+    try {
+      const roomName = `room-${appointment.$id}`;
+      console.log(roomName)
+      const identity = isDoctor ? appointment.doctor.name : appointment.patient.name;
+  
+      const response = await fetch("https://ai-backend-611700556817.us-central1.run.app/generate-token", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ roomName, identity }),
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to fetch Twilio token");
+      }
+  
+      const { token } = await response.json();
+      navigate("/video-room", { state: { token, roomName } });
+    } catch (error) {
+      console.error("Error joining video chat:", error);
+    }
   };
 
   const handleViewReport = (appointment: Appointment) => {
@@ -49,20 +67,17 @@ const AppointmentsPage = () => {
     setModalOpen(true);
   };
 
-  if (isLoading)
-    return (
-      <div className="bg-dm-dark h-screen flex items-center justify-center">
-        <Loader />
-      </div>
-    );
-  if (error)
-    return <div>Error loading appointments. Please try again later.</div>;
+
+  if (isJoining && token && roomName) {
+    return <VideoRoom token={token} roomName={roomName} />;
+  }
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error loading appointments. Please try again later.</div>;
 
   return (
     <div className="min-h-screen bg-dm-dark text-dm-light p-6">
-      <h1 className="text-4xl font-semibold text-center mb-6 text-dm-light">
-        My Appointments
-      </h1>
+      <h1 className="text-4xl font-semibold text-center mb-6 text-dm-light">My Appointments</h1>
       <ul className="space-y-4">
         {appointments?.map((appointment) => {
           const isJoinEnabled = new Date() >= new Date(appointment.date);
@@ -73,9 +88,7 @@ const AppointmentsPage = () => {
             >
               <div className="flex justify-between items-center space-x-4">
                 <div className="flex flex-col">
-                  <p className="text-xl font-semibold text-dm-light">
-                    Doctor: {appointment.doctor.name}
-                  </p>
+                  <p className="text-xl font-semibold text-dm-light">Doctor: {appointment.doctor.name}</p>
                   <p className="text-sm text-dm-accent">
                     Specialization: {appointment.doctor.specialization}
                   </p>
@@ -112,13 +125,10 @@ const AppointmentsPage = () => {
         })}
       </ul>
 
-      {/* Modal for viewing the report */}
       {isModalOpen && selectedAppointment && (
         <Modal onClose={() => setModalOpen(false)}>
           <div className="p-6">
-            <h2 className="text-2xl font-semibold mb-4 text-dm-light">
-              Appointment Report
-            </h2>
+            <h2 className="text-2xl font-semibold mb-4 text-dm-light">Appointment Report</h2>
             <p className="mb-2">
               <strong>Patient Name:</strong> {selectedAppointment.patient.name}
             </p>

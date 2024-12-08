@@ -21,7 +21,20 @@ import DoctorSignUpForm from "./_auth/forms/DoctorSignUpForm";
 import PatientSignUpForm from "./_auth/forms/PatientSignUpForm";
 import AppointmentsPage from "./_root/pages/AppointmentsPage";
 import HealthAssistant from "./_root/pages/HealthAssistant";
+import VideoRoom from "./_root/pages/VideoRoom";
+import { useLocation } from "react-router-dom";
 
+
+const VideoRoomWrapper = () => {
+  const location = useLocation();
+  const { token, roomName } = location.state || {}; // Destructure token and roomName from state
+
+  if (!token || !roomName) {
+    return <div>Error: Missing token or room name.</div>;
+  }
+
+  return <VideoRoom token={token} roomName={roomName} />;
+}
 const App = () => {
   const mockData = {
     doctors: ["Dr. Smith", "Dr. Brown", "Dr. Johnson"],
@@ -56,11 +69,19 @@ const App = () => {
           />
 
           <Route path="/health-assistant" element={<HealthAssistant />} />
+          <Route
+  path="/video-room"
+  element={
+    <VideoRoomWrapper />
+  }
+/>;
           <Route path="/ai-chat-history" element={<AIChatHistory />} />
         </Route>
+        
       </Routes>
 
       <Toaster />
+      
     </main>
   );
 };
