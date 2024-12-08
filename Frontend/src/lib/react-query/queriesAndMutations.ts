@@ -14,6 +14,8 @@ import {
   getDiagnosis,
   getDoctorsBySpecialization,
   getAIChatHistory,
+  addAIChatHistory,
+  searchDoctors,
 } from "../api";
 import { INewPatient, INewDoctor } from "@/types";
 import { QUERY_KEYS } from "./queryKeys";
@@ -23,6 +25,26 @@ export const useGetAIChatHistory = (patientId: string) => {
     queryKey: [QUERY_KEYS.GET_AI_CHAT_HISTORY, patientId],
     queryFn: () => getAIChatHistory(patientId),
     enabled: !!patientId,
+  });
+};
+
+export const useSearchDoctors = (input: string) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.SEARCH_DOCTORS, input],
+    queryFn: () => searchDoctors(input),
+    enabled: !!input,
+  });
+};
+
+export const useAddAiChatHistory = () => {
+  return useMutation({
+    mutationFn: ({
+      patientId,
+      message,
+    }: {
+      patientId: string;
+      message: string;
+    }) => addAIChatHistory(patientId, message),
   });
 };
 

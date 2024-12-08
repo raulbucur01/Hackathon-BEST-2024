@@ -49,7 +49,12 @@ const AppointmentsPage = () => {
     setModalOpen(true);
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <div className="bg-dm-dark h-screen flex items-center justify-center">
+        <Loader />
+      </div>
+    );
   if (error)
     return <div>Error loading appointments. Please try again later.</div>;
 

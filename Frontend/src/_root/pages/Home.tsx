@@ -23,7 +23,7 @@ const Home = () => {
 
   const handleViewAppointments = () => {
     if (userId) {
-      navigate(`/appointments/${userId}`);
+      navigate(`/appointments`);
     } else {
       alert("You must be logged in to view appointments.");
     }

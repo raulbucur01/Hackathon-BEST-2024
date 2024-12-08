@@ -23,6 +23,12 @@ import AppointmentsPage from "./_root/pages/AppointmentsPage";
 import HealthAssistant from "./_root/pages/HealthAssistant";
 
 const App = () => {
+  const mockData = {
+    doctors: ["Dr. Smith", "Dr. Brown", "Dr. Johnson"],
+    symptoms: ["Headache", "Fever", "Cough"],
+    suggestedFields: ["Neurology", "Cardiology", "Pediatrics"],
+  };
+
   return (
     <main className="flex h-screen">
       <Routes>
@@ -39,7 +45,7 @@ const App = () => {
         {/* private routes */}
         <Route element={<RootLayout />}>
           <Route index element={<Home />} />
-          <Route path="/search" element={<Search />} />
+          <Route path="/search" element={<Search data={mockData} />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/inbox" element={<Inbox />} />

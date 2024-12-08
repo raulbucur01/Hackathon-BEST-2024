@@ -19,6 +19,25 @@ export async function getAIChatHistory(patientId: string): Promise<string[]> {
   }
 }
 
+export async function searchDoctors(input: string) {
+  try {
+    const doctors = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.doctorCollectionId,
+      [Query.search("name", input)]
+    );
+
+    // Map the documents to Doctor type
+    return doctors.documents.map((doc: any) => ({
+      id: doc.$id, // Appwrite documents have a $id field
+      name: doc.name,
+    }));
+  } catch (error) {
+    console.error("Error searching for doctors:", error);
+    return [];
+  }
+}
+
 export async function addAIChatHistory(patientId: string, message: string) {
   try {
     // Fetch the current document using the document ID
@@ -180,11 +199,16 @@ export async function createAppointment({
   report: { symptoms: string[]; diagnosis: string };
 }) {
   try {
-    console.log("Creating appointment with:", { patientId, doctorId, date, report });
+    console.log("Creating appointment with:", {
+      patientId,
+      doctorId,
+      date,
+      report,
+    });
 
     // Convert the report object to a string
     const reportString = JSON.stringify(report);
-    console.log(reportString)
+    console.log(reportString);
     // Create the appointment with the report
     await databases.createDocument(
       appwriteConfig.databaseId,
@@ -222,8 +246,10 @@ export async function createAppointment({
   }
 }
 
-
-export async function getAppointmentsForUser(userId: string, isDoctor: boolean) {
+export async function getAppointmentsForUser(
+  userId: string,
+  isDoctor: boolean
+) {
   try {
     console.log(
       `Fetching appointments for user ID: ${userId}, isDoctor: ${isDoctor}`
@@ -277,7 +303,6 @@ export async function getAppointmentsForUser(userId: string, isDoctor: boolean) 
     throw error;
   }
 }
-
 
 export async function getDiagnosis(message: string) {
   try {
