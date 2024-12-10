@@ -75,7 +75,7 @@ const AppointmentsPage = () => {
     const now = new Date();
     const diffMinutes = (now.getTime() - appointmentDate.getTime()) / 60000;
 
-    return diffMinutes >= 0 && diffMinutes <= 10;
+    return diffMinutes >= 0 && diffMinutes <= 240;
   };
 
   if (isLoading)
